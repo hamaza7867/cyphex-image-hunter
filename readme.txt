@@ -4,7 +4,7 @@ Tags: ai, images, pexels, pixabay, dall-e
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,10 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.5.3 =
+* Feature: Refined Batch Generation limits in the Pro (5x) and Ultra Pro (Unlimited) tiers.
+* UX: Improved feature descriptions for better tier differentiation.
 
 = 1.5.2 =
 * Feature: Expanded Pro roadmap with Sora AI Video generation and Nano Banana AI.
