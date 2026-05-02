@@ -4,7 +4,7 @@ Tags: ai, images, pexels, pixabay, dall-e
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.4.5
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,11 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.5.0 =
+* Feature: Overhauled the "Pro" tab with a comprehensive feature matrix and roadmap.
+* UI: Implemented high-end pricing cards for Free, Pro, and Ultra Pro tiers.
+* Documentation: Detailed the upcoming integrations for Flux 1.1, DALL-E 3, and Brand Watermarking.
 
 = 1.4.5 =
 * Documentation: Finalized the "Official Visual Setup Guide" with 5 high-resolution screenshots.

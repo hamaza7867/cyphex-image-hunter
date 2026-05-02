@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.4.5
+ * Version:			  1.5.0
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -186,55 +186,93 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					</div>
 				<?php endif; ?>
 				<?php if ( $active_tab == 'pro' ) : ?>
-					<div class="card" style="max-width: none; margin: 0; border: none; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); overflow: hidden; border-radius: 16px; background: #fff;">
-						<div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); padding: 40px; color: #fff; text-align: center;">
-							<span style="font-size: 40px;">💎</span>
-							<h2 style="color: #fff; font-size: 28px; margin: 10px 0;"><?php esc_html_e( 'Cyphex Pro: The Future of AI Content', 'cyphex-image-hunter' ); ?></h2>
-							<p style="font-size: 16px; opacity: 0.9; max-width: 600px; margin: 0 auto;"><?php esc_html_e( 'We are building the most advanced AI image toolkit for WordPress. Here is a sneak peek at what is arriving in the next major update.', 'cyphex-image-hunter' ); ?></p>
+					<div style="max-width: none; margin: 0;">
+						<!-- Hero Section -->
+						<div class="card" style="max-width: none; margin: 0 0 30px 0; border: none; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #fff; text-align: center; padding: 50px 20px;">
+							<div style="background: rgba(255,255,255,0.1); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px;">💎</div>
+							<h2 style="color: #fff; font-size: 32px; margin: 0 0 10px 0;"><?php esc_html_e( 'Elevate Your Content Strategy', 'cyphex-image-hunter' ); ?></h2>
+							<p style="font-size: 18px; opacity: 0.9; max-width: 700px; margin: 0 auto;"><?php esc_html_e( 'Compare our upcoming plans and discover the power of advanced AI image generation directly in your WordPress dashboard.', 'cyphex-image-hunter' ); ?></p>
 						</div>
-						
-						<div style="padding: 30px; background: #fff;">
-							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-								<!-- Feature 1 -->
-								<div style="border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; transition: all 0.3s ease;">
-									<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-										<span style="background: #eff6ff; color: #2563eb; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;"><?php esc_html_e( 'Coming Soon', 'cyphex-image-hunter' ); ?></span>
-										<h3 style="margin: 0; font-size: 16px;">🤖 <?php esc_html_e( 'AI Auto-Alt & Description', 'cyphex-image-hunter' ); ?></h3>
-									</div>
-									<p style="color: #64748b; font-size: 13px; line-height: 1.5;"><?php esc_html_e( 'Automatically generate SEO-optimized Alt text and detailed descriptions for every image using Llama 3.3. No more manual data entry.', 'cyphex-image-hunter' ); ?></p>
-								</div>
 
-								<!-- Feature 2 -->
-								<div style="border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px;">
-									<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-										<span style="background: #eff6ff; color: #2563eb; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;"><?php esc_html_e( 'Coming Soon', 'cyphex-image-hunter' ); ?></span>
-										<h3 style="margin: 0; font-size: 16px;">📚 <?php esc_html_e( 'Batch Generation', 'cyphex-image-hunter' ); ?></h3>
-									</div>
-									<p style="color: #64748b; font-size: 13px; line-height: 1.5;"><?php esc_html_e( 'Generate up to 5 variations of an image at once and pick the perfect one for your content. Perfect for fast-paced publishing.', 'cyphex-image-hunter' ); ?></p>
+						<!-- Pricing / Feature Matrix -->
+						<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;">
+							
+							<!-- FREE PLAN -->
+							<div class="card" style="max-width: none; margin: 0; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; background: #fff; display: flex; flex-direction: column;">
+								<div style="margin-bottom: 25px; text-align: center;">
+									<span style="color: #64748b; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><?php esc_html_e( 'Current', 'cyphex-image-hunter' ); ?></span>
+									<h3 style="font-size: 28px; margin: 10px 0; color: #1e293b;"><?php esc_html_e( 'Free', 'cyphex-image-hunter' ); ?></h3>
+									<div style="font-size: 36px; font-weight: 800; color: #1e293b;">$0<span style="font-size: 16px; color: #64748b; font-weight: 400;">/mo</span></div>
 								</div>
-
-								<!-- Feature 3 -->
-								<div style="border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px;">
-									<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-										<span style="background: #eff6ff; color: #2563eb; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;"><?php esc_html_e( 'Coming Soon', 'cyphex-image-hunter' ); ?></span>
-										<h3 style="margin: 0; font-size: 16px;">🎨 <?php esc_html_e( 'Brand Watermarking', 'cyphex-image-hunter' ); ?></h3>
-									</div>
-									<p style="color: #64748b; font-size: 13px; line-height: 1.5;"><?php esc_html_e( 'Protect your content by automatically overlaying your logo or brand name on all generated AI images.', 'cyphex-image-hunter' ); ?></p>
-								</div>
-
-								<!-- Feature 4 -->
-								<div style="border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px;">
-									<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-										<span style="background: #eff6ff; color: #2563eb; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase;"><?php esc_html_e( 'Coming Soon', 'cyphex-image-hunter' ); ?></span>
-										<h3 style="margin: 0; font-size: 16px;">⚡ <?php esc_html_e( 'Advanced AI Models', 'cyphex-image-hunter' ); ?></h3>
-									</div>
-									<p style="color: #64748b; font-size: 13px; line-height: 1.5;"><?php esc_html_e( 'Unlock Flux 1.1 Pro, DALL-E 3 HD, and specialized styles (3D Render, Oil Painting, Minimalist) for ultra-premium results.', 'cyphex-image-hunter' ); ?></p>
-								</div>
+								<ul style="list-style: none; padding: 0; margin: 0 0 30px 0; flex-grow: 1;">
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Unlimited Pexels & Pixabay', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Standard AI (Llama 3.3)', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Single Image Generation', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Basic SEO Alt Tags', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; display: flex; items-center; gap: 10px; font-size: 14px; color: #94a3b8;"><span class="dashicons dashicons-no-alt" style="color: #cbd5e1;"></span> <?php esc_html_e( 'No Watermarking', 'cyphex-image-hunter' ); ?></li>
+								</ul>
+								<button class="button button-disabled" disabled style="width: 100%; height: 44px; font-weight: 700; border-radius: 8px;"><?php esc_html_e( 'Active Plan', 'cyphex-image-hunter' ); ?></button>
 							</div>
 
-							<div style="margin-top: 30px; text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;">
-								<p style="margin: 0; font-weight: 600; color: #1e293b;"><?php esc_html_e( 'Want to be the first to know when Pro launches?', 'cyphex-image-hunter' ); ?></p>
-								<p style="font-size: 13px; color: #64748b;"><?php esc_html_e( 'Check back soon or follow our updates on WordPress.org.', 'cyphex-image-hunter' ); ?></p>
+							<!-- PRO PLAN -->
+							<div class="card" style="max-width: none; margin: 0; padding: 40px; border-radius: 16px; border: 2px solid #3b82f6; background: #fff; display: flex; flex-direction: column; position: relative; transform: scale(1.05); z-index: 10; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+								<div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: #fff; padding: 4px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"><?php esc_html_e( 'Most Popular', 'cyphex-image-hunter' ); ?></div>
+								<div style="margin-bottom: 25px; text-align: center;">
+									<span style="color: #3b82f6; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><?php esc_html_e( 'Coming Soon', 'cyphex-image-hunter' ); ?></span>
+									<h3 style="font-size: 28px; margin: 10px 0; color: #1e293b;"><?php esc_html_e( 'Pro', 'cyphex-image-hunter' ); ?></h3>
+									<div style="font-size: 36px; font-weight: 800; color: #1e293b;">$19<span style="font-size: 16px; color: #64748b; font-weight: 400;">/mo</span></div>
+								</div>
+								<ul style="list-style: none; padding: 0; margin: 0 0 30px 0; flex-grow: 1;">
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #1e293b; font-weight: 500;"><span class="dashicons dashicons-star-filled" style="color: #f59e0b;"></span> <?php esc_html_e( 'Everything in Free', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Flux 1.1 Support', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'DALL-E 3 HD Mode', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Brand Watermarking', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'AI Auto-Descriptions', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Priority Support', 'cyphex-image-hunter' ); ?></li>
+								</ul>
+								<button class="button button-primary" style="width: 100%; height: 44px; font-weight: 700; border-radius: 8px; background: #3b82f6; border-color: #3b82f6;"><?php esc_html_e( 'Join Waitlist', 'cyphex-image-hunter' ); ?></button>
+							</div>
+
+							<!-- ULTRA PRO PLAN -->
+							<div class="card" style="max-width: none; margin: 0; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; background: #fff; display: flex; flex-direction: column;">
+								<div style="margin-bottom: 25px; text-align: center;">
+									<span style="color: #1e293b; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;"><?php esc_html_e( 'Enterprise', 'cyphex-image-hunter' ); ?></span>
+									<h3 style="font-size: 28px; margin: 10px 0; color: #1e293b;"><?php esc_html_e( 'Ultra Pro', 'cyphex-image-hunter' ); ?></h3>
+									<div style="font-size: 36px; font-weight: 800; color: #1e293b;">$49<span style="font-size: 16px; color: #64748b; font-weight: 400;">/mo</span></div>
+								</div>
+								<ul style="list-style: none; padding: 0; margin: 0 0 30px 0; flex-grow: 1;">
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #1e293b; font-weight: 500;"><span class="dashicons dashicons-awards" style="color: #8b5cf6;"></span> <?php esc_html_e( 'Everything in Pro', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #8b5cf6;"></span> <?php esc_html_e( 'Bulk Generation (10x)', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #8b5cf6;"></span> <?php esc_html_e( 'Custom AI LORA Training', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #8b5cf6;"></span> <?php esc_html_e( 'Commercial Protection', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #8b5cf6;"></span> <?php esc_html_e( 'Multi-site License', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #8b5cf6;"></span> <?php esc_html_e( 'Dedicated API Credits', 'cyphex-image-hunter' ); ?></li>
+								</ul>
+								<button class="button button-secondary" style="width: 100%; height: 44px; font-weight: 700; border-radius: 8px; border-color: #1e293b; color: #1e293b;"><?php esc_html_e( 'Coming Soon', 'cyphex-image-hunter' ); ?></button>
+							</div>
+
+						</div>
+
+						<!-- Detailed Feature Grid -->
+						<div class="card" style="max-width: none; margin: 40px 0 0 0; padding: 40px; border-radius: 16px; background: #fff; border: 1px solid #e2e8f0;">
+							<h3 style="margin-top: 0; font-size: 20px; color: #1e293b; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px;"><?php esc_html_e( 'Deep Dive: Planned Features', 'cyphex-image-hunter' ); ?></h3>
+							<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+								<div>
+									<h4 style="margin: 0 0 10px 0; color: #1e293b;">🤖 <?php esc_html_e( 'Next-Gen AI Models', 'cyphex-image-hunter' ); ?></h4>
+									<p style="font-size: 13px; color: #64748b; line-height: 1.6;"><?php esc_html_e( 'Integration with Flux 1.1 and DALL-E 3 will allow you to generate photo-realistic images with perfect text rendering and anatomical accuracy.', 'cyphex-image-hunter' ); ?></p>
+								</div>
+								<div>
+									<h4 style="margin: 0 0 10px 0; color: #1e293b;">🖌️ <?php esc_html_e( 'Smart Brand Assets', 'cyphex-image-hunter' ); ?></h4>
+									<p style="font-size: 13px; color: #64748b; line-height: 1.6;"><?php esc_html_e( 'Upload your logo once and have it intelligently placed on every AI image you generate, ensuring consistent branding across your site.', 'cyphex-image-hunter' ); ?></p>
+								</div>
+								<div>
+									<h4 style="margin: 0 0 10px 0; color: #1e293b;">📊 <?php esc_html_e( 'Bulk Asset Packing', 'cyphex-image-hunter' ); ?></h4>
+									<p style="font-size: 13px; color: #64748b; line-height: 1.6;"><?php esc_html_e( 'Generate entire galleries of images for a single post in seconds. Pick the best ones or use them all for a rich visual experience.', 'cyphex-image-hunter' ); ?></p>
+								</div>
+								<div>
+									<h4 style="margin: 0 0 10px 0; color: #1e293b;">🧠 <?php esc_html_e( 'Custom LORA Training', 'cyphex-image-hunter' ); ?></h4>
+									<p style="font-size: 13px; color: #64748b; line-height: 1.6;"><?php esc_html_e( 'Train the AI on your specific products or style to get results that are perfectly tailored to your brand identity.', 'cyphex-image-hunter' ); ?></p>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -377,10 +415,10 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_script('puter-js', 'https://js.puter.com/v2/', array(), '2.0', true );
 			
 			// Enqueue CSS
-			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.4.5');
+			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.0');
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.4.5', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.0', true );
 			
 			// Localize script with translatable strings
 			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(
