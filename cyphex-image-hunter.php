@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.5.5
+ * Version:			  1.5.6
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -97,9 +97,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			?>
 			<div class="wrap" style="margin: 20px 20px 0 0; max-width: none;">
 				<div style="display: flex; align-items: center; margin-bottom: 25px; gap: 15px;">
-					<div style="background: linear-gradient(135deg, #2271b1 0%, #3b82f6 100%); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(34, 113, 177, 0.2);">
-						<span class="dashicons dashicons-images-alt2" style="color: #fff; font-size: 24px; width: 24px; height: 24px;"></span>
-					</div>
+					<img src="<?php echo esc_url( plugins_url( 'assets/images/logo.jpeg', __FILE__ ) ); ?>" style="width: 48px; height: 48px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" />
 					<div>
 						<h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e293b;"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 						<p style="margin: 0; color: #64748b; font-size: 14px;"><?php esc_html_e( 'The most advanced AI image toolkit for WordPress.', 'cyphex-image-hunter' ); ?></p>
@@ -189,9 +187,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					<div style="max-width: none; margin: 0;">
 						<!-- Hero Section -->
 						<div class="card" style="max-width: none; margin: 0 0 30px 0; border: none; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #fff; text-align: center; padding: 50px 20px;">
-							<div style="background: rgba(255,255,255,0.2); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-								<span class="dashicons dashicons-images-alt2" style="color: #fff; font-size: 40px; width: 40px; height: 40px;"></span>
-							</div>
+							<img src="<?php echo esc_url( plugins_url( 'assets/images/logo.jpeg', __FILE__ ) ); ?>" style="width: 80px; height: 80px; border-radius: 20px; margin: 0 auto 20px; display: block; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);" />
 							<h2 style="color: #fff; font-size: 32px; margin: 0 0 10px 0;"><?php esc_html_e( 'Elevate Your Content Strategy', 'cyphex-image-hunter' ); ?></h2>
 							<p style="font-size: 18px; opacity: 0.9; max-width: 700px; margin: 0 auto;"><?php esc_html_e( 'Compare our upcoming plans and discover the power of advanced AI image generation directly in your WordPress dashboard.', 'cyphex-image-hunter' ); ?></p>
 						</div>
@@ -419,10 +415,10 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_script('puter-js', 'https://js.puter.com/v2/', array(), '2.0', true );
 			
 			// Enqueue CSS
-			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.5');
+			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.6');
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.5', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.6', true );
 			
 			// Localize script with translatable strings
 			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(
