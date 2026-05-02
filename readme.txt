@@ -4,7 +4,7 @@ Tags: ai, images, pexels, pixabay, dall-e
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.0
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,15 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.5.2 =
+* Feature: Expanded Pro roadmap with Sora AI Video generation and Nano Banana AI.
+* Feature: Added Pexels & Pixabay Video Picker to the Pro feature list.
+* Branding: Unified original icon usage across all dashboards.
+
+= 1.5.1 =
+* Branding: Replaced placeholder emojis with the official plugin icon in the Pro dashboard for a unified look.
+* UI: Refined hero sections to better match the core brand identity.
 
 = 1.5.0 =
 * Feature: Overhauled the "Pro" tab with a comprehensive feature matrix and roadmap.
