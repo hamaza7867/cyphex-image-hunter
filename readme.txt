@@ -4,7 +4,7 @@ Tags: ai, images, pexels, pixabay, dall-e
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,11 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.5.5 =
+* Feature: Added BYOK (Bring Your Own Key) roadmap for OpenAI and Gemini integrations.
+* Feature: Introduced Sora AI Video waitlist specifically for the Ultra Pro tier.
+* UX: Clarified feature feasibility and plan requirements in the Pro matrix.
 
 = 1.5.4 =
 * Feature: Added Basic AI Auto-Alt & Description to the Free plan.
