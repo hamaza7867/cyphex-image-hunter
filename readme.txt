@@ -4,7 +4,7 @@ Tags: ai images, image generation, seo, image search, ai video, flux, groq, sora
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,11 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.6.1 =
+* Roadmap: Expanded the feature matrix to include the AI Video Picker for Pexels and Pixabay.
+* Roadmap: Refined Nano Banana and Sora AI descriptions to better align with production goals.
+* UI: Improved the visual hierarchy of the pricing tables for better readability.
 
 = 1.6.0 =
 * Production: Finalized the Cyphex Image Hunter v1.6.0 production build.
