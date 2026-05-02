@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.5.6
+ * Version:			  1.5.7
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -308,9 +308,9 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
 											<div style="margin-bottom: 15px;">
 												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">1</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Groq Console: Home', 'cyphex-image-hunter' ); ?></h4>
+												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Navigate to the Console', 'cyphex-image-hunter' ); ?></h4>
 											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Start at the Home dashboard. This gives you an overview of your AI usage and capabilities.', 'cyphex-image-hunter' ); ?></p>
+											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Go to the Groq Console (console.groq.com) to start your setup.', 'cyphex-image-hunter' ); ?></p>
 											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-home.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
 										</div>
 
@@ -318,9 +318,9 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
 											<div style="margin-bottom: 15px;">
 												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">2</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Available AI Models', 'cyphex-image-hunter' ); ?></h4>
+												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Sign In to Your Account', 'cyphex-image-hunter' ); ?></h4>
 											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'You can see the high-speed Llama and Mixtral models that power this plugin.', 'cyphex-image-hunter' ); ?></p>
+											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Click on the Login or Create Account button. When prompted, select "Continue with Google" and choose your Google account.', 'cyphex-image-hunter' ); ?></p>
 											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-models.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
 										</div>
 
@@ -328,9 +328,9 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
 											<div style="margin-bottom: 15px;">
 												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">3</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'The API Keys List', 'cyphex-image-hunter' ); ?></h4>
+												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Access API Keys', 'cyphex-image-hunter' ); ?></h4>
 											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Access your existing keys here. For security, we have masked the keys in this tutorial.', 'cyphex-image-hunter' ); ?></p>
+											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Once logged in, look at the sidebar on the left and click on "API Keys" to manage your credentials.', 'cyphex-image-hunter' ); ?></p>
 											<div style="position: relative; overflow: hidden; border-radius: 12px; border: 1px solid #e2e8f0;">
 												<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-list.png', __FILE__ ) ); ?>" style="width: 100%; display: block;" />
 												<div style="position: absolute; top: 25%; left: 30%; width: 20%; height: 60%; background: rgba(255,255,255,0.2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 4px;"></div>
@@ -341,9 +341,9 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
 											<div style="margin-bottom: 15px;">
 												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">4</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Generate Your Key', 'cyphex-image-hunter' ); ?></h4>
+												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Create Your Key', 'cyphex-image-hunter' ); ?></h4>
 											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Click "Create API Key" and enter a name to identify this connection.', 'cyphex-image-hunter' ); ?></p>
+											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Click the "Create API Key" button. Give your key a name (e.g., "Free-Test-Key") and click Submit.', 'cyphex-image-hunter' ); ?></p>
 											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-modal.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
 										</div>
 
@@ -351,9 +351,9 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
 											<div style="margin-bottom: 15px;">
 												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">5</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Copy & Secure Your Key', 'cyphex-image-hunter' ); ?></h4>
+												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Copy and Save', 'cyphex-image-hunter' ); ?></h4>
 											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Copy your new key. Once you close this modal, you will not be able to see the key again.', 'cyphex-image-hunter' ); ?></p>
+											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'A pop-up will display your new API key. Copy it immediately and save it in a secure location. You will not be able to view the full key again once you close that window.', 'cyphex-image-hunter' ); ?></p>
 											<div style="position: relative; overflow: hidden; border-radius: 12px; border: 1px solid #e2e8f0;">
 												<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-success.png', __FILE__ ) ); ?>" style="width: 100%; display: block;" />
 												<div style="position: absolute; top: 53%; left: 33%; width: 32%; height: 4%; background: rgba(255,255,255,0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 4px;"></div>
@@ -415,10 +415,10 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_script('puter-js', 'https://js.puter.com/v2/', array(), '2.0', true );
 			
 			// Enqueue CSS
-			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.6');
+			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.7');
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.6', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.7', true );
 			
 			// Localize script with translatable strings
 			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(
