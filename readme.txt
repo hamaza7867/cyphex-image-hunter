@@ -1,10 +1,10 @@
 === Cyphex Image Hunter ===
 Contributors: hamaza7867
-Tags: ai, images, pexels, pixabay, dall-e
+Tags: ai images, image generation, seo, image search, ai video, flux, groq, sora, pexels, pixabay
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.8
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,12 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.6.0 =
+* Production: Finalized the Cyphex Image Hunter v1.6.0 production build.
+* Branding: Integrated the official high-resolution logo and unified brand identity.
+* Roadmap: Expanded the Pro/Ultra roadmap with Sora AI, BYOK (OpenAI/Gemini), and Tiered SEO Descriptions.
+* Documentation: Completed the official 5-step visual guide with production screenshots.
 
 = 1.5.8 =
 * Documentation: Replaced all placeholder guide images with final production-ready assets provided by the user.
