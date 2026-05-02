@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.5.3
+ * Version:			  1.5.4
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -210,7 +210,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Unlimited Pexels & Pixabay', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Standard AI (Llama 3.3)', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Single Image Generation', 'cyphex-image-hunter' ); ?></li>
-									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Basic SEO Alt Tags', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #10b981;"></span> <?php esc_html_e( 'Basic AI Auto-Alt & Description', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; display: flex; items-center; gap: 10px; font-size: 14px; color: #94a3b8;"><span class="dashicons dashicons-no-alt" style="color: #cbd5e1;"></span> <?php esc_html_e( 'No Watermarking', 'cyphex-image-hunter' ); ?></li>
 								</ul>
 								<button class="button button-disabled" disabled style="width: 100%; height: 44px; font-weight: 700; border-radius: 8px;"><?php esc_html_e( 'Active Plan', 'cyphex-image-hunter' ); ?></button>
@@ -229,6 +229,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Nano Banana AI Integration', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Pexels & Pixabay Video Picker', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Flux 1.1 & DALL-E 3 Support', 'cyphex-image-hunter' ); ?></li>
+									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Advanced SEO-Optimized Descriptions', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Brand Watermarking', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Batch Generation (Limited 5x)', 'cyphex-image-hunter' ); ?></li>
 									<li style="padding: 10px 0; display: flex; items-center; gap: 10px; font-size: 14px; color: #475569;"><span class="dashicons dashicons-yes" style="color: #3b82f6;"></span> <?php esc_html_e( 'Priority Support', 'cyphex-image-hunter' ); ?></li>
@@ -418,10 +419,10 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_script('puter-js', 'https://js.puter.com/v2/', array(), '2.0', true );
 			
 			// Enqueue CSS
-			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.3');
+			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.5.4');
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.3', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.5.4', true );
 			
 			// Localize script with translatable strings
 			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(

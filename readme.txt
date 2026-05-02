@@ -4,7 +4,7 @@ Tags: ai, images, pexels, pixabay, dall-e
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,11 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.5.4 =
+* Feature: Added Basic AI Auto-Alt & Description to the Free plan.
+* Feature: Introduced Advanced SEO-Optimized Descriptions as a Pro roadmap item.
+* UI: Updated the feature matrix to clearly show tier differences.
 
 = 1.5.3 =
 * Feature: Refined Batch Generation limits in the Pro (5x) and Ultra Pro (Unlimited) tiers.
