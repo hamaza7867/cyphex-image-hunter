@@ -4,7 +4,7 @@ Tags: ai, images, pexels, pixabay, dall-e
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,10 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.5.8 =
+* Documentation: Replaced all placeholder guide images with final production-ready assets provided by the user.
+* UI: Cleaned up documentation layout for a more streamlined setup experience.
 
 = 1.5.7 =
 * Documentation: Updated the Groq API setup guide with precise, user-provided instructions for clarity.
