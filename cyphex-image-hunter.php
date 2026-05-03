@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.6.3
+ * Version:			  1.6.5
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -285,192 +285,66 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 						<div style="display: grid; grid-template-columns: 250px 1fr; gap: 40px; margin-top: 20px;">
 							<div style="border-right: 1px solid #eee; padding-right: 20px;">
 								<ul style="list-style: none; padding: 0; margin: 0; position: sticky; top: 50px;">
-									<li style="margin-bottom: 15px;"><a href="#what-is-groq" style="text-decoration: none; color: #2271b1; font-weight: 600;">⚡ <?php esc_html_e( 'Groq Setup', 'cyphex-image-hunter' ); ?></a></li>
-									<li style="margin-bottom: 15px;"><a href="#pexels-setup" style="text-decoration: none; color: #2271b1; font-weight: 600;">📷 <?php esc_html_e( 'Pexels Setup', 'cyphex-image-hunter' ); ?></a></li>
-									<li style="margin-bottom: 15px;"><a href="#pixabay-setup" style="text-decoration: none; color: #2271b1; font-weight: 600;">🖼 <?php esc_html_e( 'Pixabay Setup', 'cyphex-image-hunter' ); ?></a></li>
-									<li style="margin-bottom: 15px;"><a href="#setup" style="text-decoration: none; color: #2271b1; font-weight: 600;">🛠 <?php esc_html_e( 'Initial Setup', 'cyphex-image-hunter' ); ?></a></li>
-									<li style="margin-bottom: 15px;"><a href="#using" style="text-decoration: none; color: #2271b1; font-weight: 600;">🎯 <?php esc_html_e( 'How to Use', 'cyphex-image-hunter' ); ?></a></li>
-									<li style="margin-bottom: 15px;"><a href="#trouble" style="text-decoration: none; color: #2271b1; font-weight: 600;">🔧 <?php esc_html_e( 'Troubleshooting', 'cyphex-image-hunter' ); ?></a></li>
+									<li style="margin-bottom: 15px;"><a href="#intro" style="text-decoration: none; color: #2271b1; font-weight: 600;">📜 <?php esc_html_e( 'Welcome & Intro', 'cyphex-image-hunter' ); ?></a></li>
+									<li style="margin-bottom: 15px;"><a href="#groq" style="text-decoration: none; color: #2271b1; font-weight: 600;">⚡ <?php esc_html_e( 'Groq API Setup', 'cyphex-image-hunter' ); ?></a></li>
+									<li style="margin-bottom: 15px;"><a href="#pixabay" style="text-decoration: none; color: #2271b1; font-weight: 600;">🖼 <?php esc_html_e( 'Pixabay API Setup', 'cyphex-image-hunter' ); ?></a></li>
+									<li style="margin-bottom: 15px;"><a href="#pexels" style="text-decoration: none; color: #2271b1; font-weight: 600;">📷 <?php esc_html_e( 'Pexels API Setup', 'cyphex-image-hunter' ); ?></a></li>
+									<li style="margin-bottom: 15px;"><a href="#thanks" style="text-decoration: none; color: #2271b1; font-weight: 600;">🙏 <?php esc_html_e( 'Thank You', 'cyphex-image-hunter' ); ?></a></li>
 								</ul>
 							</div>
 							
 							<div>
-								<section id="what-is-groq" style="margin-bottom: 40px;">
-									<h3 style="margin-top: 0;"><?php esc_html_e( '⚡ What is Groq and why do I need it?', 'cyphex-image-hunter' ); ?></h3>
-									<p><?php esc_html_e( 'Groq is a high-speed AI engine (LPU) that powers the "brain" of this plugin. While stock providers give you the images, Groq does the intelligent work:', 'cyphex-image-hunter' ); ?></p>
-									<ul style="list-style: disc; padding-left: 20px; color: #444;">
-										<li><strong><?php esc_html_e( 'Prompt Engineering:', 'cyphex-image-hunter' ); ?></strong> <?php esc_html_e( 'It takes your simple search (e.g. "car") and expands it into a professional AI prompt.', 'cyphex-image-hunter' ); ?></li>
-										<li><strong><?php esc_html_e( 'SEO Metadata:', 'cyphex-image-hunter' ); ?></strong> <?php esc_html_e( 'It automatically generates SEO-optimized Alt text and titles for your images.', 'cyphex-image-hunter' ); ?></li>
-										<li><strong><?php esc_html_e( 'Speed:', 'cyphex-image-hunter' ); ?></strong> <?php esc_html_e( 'Groq is significantly faster than standard AI, giving you results in milliseconds.', 'cyphex-image-hunter' ); ?></li>
-									</ul>
-									<div style="margin-top: 30px;">
-										<p style="font-weight: 600; margin-bottom: 25px; font-size: 18px; color: #1e293b;"><?php esc_html_e( 'Official Visual Setup Guide', 'cyphex-image-hunter' ); ?></p>
-										
-										<!-- Step 1 -->
-										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
-											<div style="margin-bottom: 15px;">
-												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">1</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Sign In to Your Account', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Go to the Groq Console. Click on the Login or Create Account button, select "Continue with Google" and choose your Google account.', 'cyphex-image-hunter' ); ?></p>
-											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-1.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
-										</div>
-
-										<!-- Step 2 -->
-										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
-											<div style="margin-bottom: 15px;">
-												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">2</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Navigate to API Keys', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'From the main dashboard, look at the top menu and click on "API Keys" to manage your credentials.', 'cyphex-image-hunter' ); ?></p>
-											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-2.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
-										</div>
-
-										<!-- Step 3 -->
-										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
-											<div style="margin-bottom: 15px;">
-												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">3</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Access API Management', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'You are now in the API Keys section where you can view your existing keys and generate new ones.', 'cyphex-image-hunter' ); ?></p>
-											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-3.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
-										</div>
-
-										<!-- Step 4 -->
-										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
-											<div style="margin-bottom: 15px;">
-												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">4</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Create Your Key', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'Click the "Create API Key" button. Give your key a name and click Submit.', 'cyphex-image-hunter' ); ?></p>
-											<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-4.png', __FILE__ ) ); ?>" style="width: 100%; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);" />
-										</div>
-
-										<!-- Step 5 -->
-										<div style="margin-bottom: 50px; border-left: 4px solid #3b82f6; padding-left: 25px;">
-											<div style="margin-bottom: 15px;">
-												<span style="background: #3b82f6; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">5</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Copy and Save', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b; margin-bottom: 20px;"><?php esc_html_e( 'A pop-up will display your new API key. Copy it immediately and save it in a secure location. You will not be able to view the full key again.', 'cyphex-image-hunter' ); ?></p>
-											<div style="position: relative; overflow: hidden; border-radius: 12px; border: 1px solid #e2e8f0;">
-												<img src="<?php echo esc_url( plugins_url( 'assets/images/groq-step-5.png', __FILE__ ) ); ?>" style="width: 100%; display: block;" />
-											</div>
-										</div>
-									</div>
-								</section>
-
-								<section id="pexels-setup" style="margin-bottom: 40px; border-top: 1px solid #f1f5f9; padding-top: 40px;">
-									<h3 style="margin-top: 0;"><?php esc_html_e( '📷 Step-by-Step Guide: Pexels API Key', 'cyphex-image-hunter' ); ?></h3>
-									<p><?php esc_html_e( 'Pexels provides the high-quality photography that the Image Hunter sources. Follow these steps to get your free key:', 'cyphex-image-hunter' ); ?></p>
+							<div style="background: #f8fafc; padding: 20px; border-radius: 12px;">
+								<div id="handbook-container" style="display: flex; flex-direction: column; gap: 30px;">
 									
-									<div style="margin-top: 30px;">
-										<!-- Step 1 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #10b981; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #10b981; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">1</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Create a Pexels Account', 'cyphex-image-hunter' ); ?></h4>
+									<!-- Section: Intro -->
+									<div id="intro">
+										<?php for ($i=1; $i<=8; $i++): ?>
+											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); background: #fff;">
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
 											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'If you haven\'t already, go to Pexels and sign up for a free account.', 'cyphex-image-hunter' ); ?></p>
-										</div>
+										<?php endfor; ?>
+									</div>
 
-										<!-- Step 2 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #10b981; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #10b981; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">2</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Access the API Section', 'cyphex-image-hunter' ); ?></h4>
+									<!-- Section: Groq -->
+									<div id="groq">
+										<h3 style="margin: 20px 0; color: #1e293b; display: flex; align-items: center; gap: 10px;"><span style="background: #3b82f6; color: #fff; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">⚡</span> <?php esc_html_e( 'Groq API Configuration', 'cyphex-image-hunter' ); ?></h3>
+										<?php for ($i=9; $i<=18; $i++): ?>
+											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
 											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'Once logged in, navigate to the Pexels API page to manage your developer credentials.', 'cyphex-image-hunter' ); ?></p>
-										</div>
+										<?php endfor; ?>
+									</div>
 
-										<!-- Step 3 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #10b981; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #10b981; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">3</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Request Your Key', 'cyphex-image-hunter' ); ?></h4>
+									<!-- Section: Pixabay -->
+									<div id="pixabay">
+										<h3 style="margin: 20px 0; color: #1e293b; display: flex; align-items: center; gap: 10px;"><span style="background: #f59e0b; color: #fff; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">🖼</span> <?php esc_html_e( 'Pixabay API Configuration', 'cyphex-image-hunter' ); ?></h3>
+										<?php for ($i=19; $i<=28; $i++): ?>
+											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
 											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'Follow the prompts on that page to generate your API key. You will need to provide some basic information about how you intend to use the API.', 'cyphex-image-hunter' ); ?></p>
-										</div>
+										<?php endfor; ?>
+									</div>
 
-										<!-- Step 4 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #10b981; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #10b981; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">4</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Copy Your Key', 'cyphex-image-hunter' ); ?></h4>
+									<!-- Section: Pexels -->
+									<div id="pexels">
+										<h3 style="margin: 20px 0; color: #1e293b; display: flex; align-items: center; gap: 10px;"><span style="background: #10b981; color: #fff; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">📷</span> <?php esc_html_e( 'Pexels API Configuration', 'cyphex-image-hunter' ); ?></h3>
+										<?php for ($i=29; $i<=37; $i++): ?>
+											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
 											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'After approval/generation, you will be provided with your unique API key. Keep this key secure; it is your "password" for accessing the API endpoints.', 'cyphex-image-hunter' ); ?></p>
+										<?php endfor; ?>
+									</div>
+
+									<!-- Section: Thanks -->
+									<div id="thanks">
+										<div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
+											<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-38.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
 										</div>
 									</div>
-								</section>
 
-								<section id="pixabay-setup" style="margin-bottom: 40px; border-top: 1px solid #f1f5f9; padding-top: 40px;">
-									<h3 style="margin-top: 0;"><?php esc_html_e( '🖼 Step-by-Step Guide: Pixabay API Key', 'cyphex-image-hunter' ); ?></h3>
-									<p><?php esc_html_e( 'Pixabay provides a massive library of free images and videos. Follow these steps to get your key:', 'cyphex-image-hunter' ); ?></p>
-									
-									<div style="margin-top: 30px;">
-										<!-- Step 1 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #f59e0b; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #f59e0b; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">1</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Create an Account', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'Visit Pixabay and sign up for a free account (or log in if you already have one).', 'cyphex-image-hunter' ); ?></p>
-										</div>
-
-										<!-- Step 2 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #f59e0b; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #f59e0b; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">2</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Go to API Documentation', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'Once logged in, navigate to the Pixabay API Documentation page.', 'cyphex-image-hunter' ); ?></p>
-										</div>
-
-										<!-- Step 3 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #f59e0b; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #f59e0b; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">3</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Locate Your Key', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'Scroll down to the "Search Images" section. Because you are logged in, your personal API key will be displayed directly within the parameter examples (look for key=YOUR_API_KEY).', 'cyphex-image-hunter' ); ?></p>
-										</div>
-
-										<!-- Step 4 -->
-										<div style="margin-bottom: 30px; border-left: 4px solid #f59e0b; padding-left: 25px;">
-											<div style="margin-bottom: 10px;">
-												<span style="background: #f59e0b; color: #fff; width: 24px; height: 24px; display: inline-flex; items-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 10px;">4</span>
-												<h4 style="display: inline; margin: 0; font-size: 16px; color: #1e293b;"><?php esc_html_e( 'Copy and Use', 'cyphex-image-hunter' ); ?></h4>
-											</div>
-											<p style="font-size: 14px; color: #64748b;"><?php esc_html_e( 'Simply copy that alphanumeric string and paste it into the Cyphex Image Hunter settings page.', 'cyphex-image-hunter' ); ?></p>
-										</div>
-									</div>
-								</section>
-
-								<section id="setup" style="margin-bottom: 40px;">
-									<h3><?php esc_html_e( '🛠 Initial Setup & API Keys', 'cyphex-image-hunter' ); ?></h3>
-									<p><?php esc_html_e( 'To start hunting images, you need to connect your API keys in the "General Settings" tab.', 'cyphex-image-hunter' ); ?></p>
-									<ul style="list-style: disc; padding-left: 20px;">
-										<li><strong><?php esc_html_e( 'Groq AI:', 'cyphex-image-hunter' ); ?></strong> <?php esc_html_e( 'Mandatory for AI features. Get it at console.groq.com.', 'cyphex-image-hunter' ); ?></li>
-										<li><strong><?php esc_html_e( 'Stock Providers:', 'cyphex-image-hunter' ); ?></strong> <?php esc_html_e( 'Connect Pexels or Pixabay for standard photography.', 'cyphex-image-hunter' ); ?></li>
-									</ul>
-								</section>
-
-								<section id="using" style="margin-bottom: 40px;">
-									<h3><?php esc_html_e( '🎯 How to Use the Image Hunter', 'cyphex-image-hunter' ); ?></h3>
-									<ol style="padding-left: 20px;">
-										<li><?php esc_html_e( 'Open any Post and click "Add Media".', 'cyphex-image-hunter' ); ?></li>
-										<li><?php esc_html_e( 'Select "Cyphex Image Hunt" from the sidebar.', 'cyphex-image-hunter' ); ?></li>
-										<li><?php esc_html_e( 'Search for anything—AI will handle the rest.', 'cyphex-image-hunter' ); ?></li>
-									</ol>
-								</section>
-
-								<section id="trouble" style="margin-bottom: 40px;">
-									<h3><?php esc_html_e( '🔧 Troubleshooting & FAQ', 'cyphex-image-hunter' ); ?></h3>
-									<div style="background: #fff5f5; padding: 15px; border-radius: 6px; border-left: 4px solid #d63638;">
-										<h4 style="margin-top: 0;"><?php esc_html_e( 'API Links Blocked?', 'cyphex-image-hunter' ); ?></h4>
-										<p style="margin-bottom: 0;"><?php esc_html_e( 'If clicking buttons doesn\'t work, right-click and "Open link in new tab".', 'cyphex-image-hunter' ); ?></p>
-									</div>
-								</section>
+								</div>
+							</div>
 							</div>
 						</div>
 					</div>

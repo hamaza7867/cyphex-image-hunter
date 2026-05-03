@@ -4,7 +4,7 @@ Tags: ai images, image generation, seo, image search, ai video, flux, groq, sora
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.3
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,11 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.6.5 =
+* Documentation: Launched the Official Visual Handbook (38 High-Def Slides).
+* Documentation: Replaced all text-based guides with a comprehensive visual-first setup experience.
+* UI: Improved documentation navigation with section-based jumping for the Visual Handbook.
 
 = 1.6.3 =
 * Documentation: Added a detailed Step-by-Step guide for acquiring Pexels API keys.
