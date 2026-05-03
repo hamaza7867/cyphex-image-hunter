@@ -4,7 +4,7 @@ Tags: ai images, image search, seo, ai video, pexels
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,10 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.6.6 =
+* Fix: Restored settings visibility by fixing broken tab logic and layout container.
+* Optimization: Added lazy loading to all handbook images.
 
 = 1.6.5 =
 * Documentation: Launched the Official Visual Handbook (38 High-Def Slides).

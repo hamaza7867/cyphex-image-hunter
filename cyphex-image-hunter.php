@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.6.5
+ * Version:			  1.6.6
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -86,8 +86,6 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			}
 			?>
 			<div class="wrap">
-				<h1><?php esc_html_e( 'Cyphex Image Hunter', 'cyphex-image-hunter'); ?></h1>
-				
 			<?php
 				if ( isset( $_GET['tab'] ) ) {
 					check_admin_referer( 'cyphex_image_hunter_tabs' );
@@ -95,8 +93,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 				$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general';
 				$is_pro = cyphex_is_pro();
 			?>
-			<div class="wrap" style="margin: 20px 20px 0 0; max-width: none;">
-				<div style="display: flex; align-items: center; margin-bottom: 25px; gap: 15px;">
+				<div style="display: flex; align-items: center; margin-bottom: 25px; gap: 15px; margin-top: 20px;">
 					<img src="<?php echo esc_url( plugins_url( 'assets/images/logo.jpeg', __FILE__ ) ); ?>" style="width: 48px; height: 48px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" />
 					<div>
 						<h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e293b;"><?php echo esc_html( get_admin_page_title() ); ?></h1>
@@ -301,7 +298,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 									<div id="intro">
 										<?php for ($i=1; $i<=8; $i++): ?>
 											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); background: #fff;">
-												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" loading="lazy" />
 											</div>
 										<?php endfor; ?>
 									</div>
@@ -311,7 +308,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<h3 style="margin: 20px 0; color: #1e293b; display: flex; align-items: center; gap: 10px;"><span style="background: #3b82f6; color: #fff; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">⚡</span> <?php esc_html_e( 'Groq API Configuration', 'cyphex-image-hunter' ); ?></h3>
 										<?php for ($i=9; $i<=18; $i++): ?>
 											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
-												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" loading="lazy" />
 											</div>
 										<?php endfor; ?>
 									</div>
@@ -321,7 +318,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<h3 style="margin: 20px 0; color: #1e293b; display: flex; align-items: center; gap: 10px;"><span style="background: #f59e0b; color: #fff; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">🖼</span> <?php esc_html_e( 'Pixabay API Configuration', 'cyphex-image-hunter' ); ?></h3>
 										<?php for ($i=19; $i<=28; $i++): ?>
 											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
-												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" loading="lazy" />
 											</div>
 										<?php endfor; ?>
 									</div>
@@ -331,7 +328,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 										<h3 style="margin: 20px 0; color: #1e293b; display: flex; align-items: center; gap: 10px;"><span style="background: #10b981; color: #fff; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">📷</span> <?php esc_html_e( 'Pexels API Configuration', 'cyphex-image-hunter' ); ?></h3>
 										<?php for ($i=29; $i<=37; $i++): ?>
 											<div style="margin-bottom: 30px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
-												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
+												<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-' . $i . '.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" loading="lazy" />
 											</div>
 										<?php endfor; ?>
 									</div>
@@ -339,7 +336,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 									<!-- Section: Thanks -->
 									<div id="thanks">
 										<div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background: #fff;">
-											<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-38.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" />
+											<img src="<?php echo esc_url( plugins_url( 'assets/images/docs/guide-38.png', __FILE__ ) ); ?>" style="width: 100%; display: block; height: auto;" loading="lazy" />
 										</div>
 									</div>
 
@@ -373,10 +370,10 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_script('puter-js', 'https://js.puter.com/v2/', array(), '2.0', true );
 			
 			// Enqueue CSS
-			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.6.1');
+			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.6.6');
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.6.1', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.6.6', true );
 			
 			// Localize script with translatable strings
 			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(
