@@ -1,6 +1,6 @@
 === Cyphex Image Hunter ===
 Contributors: hamaza7867
-Tags: ai images, image generation, seo, image search, ai video, flux, groq, sora, pexels, pixabay
+Tags: ai images, image search, seo, ai video, pexels
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
