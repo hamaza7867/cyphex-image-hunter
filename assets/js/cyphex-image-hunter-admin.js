@@ -587,23 +587,28 @@ jQuery( document ).ready( function ( $ ) {
 
 				var isPro = cyphex_image_hunter_vars.isPro;
 				var buttonsHtml = `
-					<div class="cyphex-sidebar-actions">
+					<div class="cyphex-sidebar-actions" style="margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px;">
 						<label class="setting">
 							<span class="name">Cyphex AI</span>
-							<div class="value">
+							<div class="value" style="display: flex; flex-wrap: wrap; gap: 5px;">
 								<button type="button" class="button button-secondary cyphex-sidebar-btn-remove-bg ${ !isPro ? 'disabled' : '' }" data-id="${attachment.id}" data-url="${attachment.url}">
 									${cyphex_image_hunter_vars.labels.removeBg} ${ !isPro ? '🔒' : '' }
 								</button>
 								<button type="button" class="button button-secondary cyphex-sidebar-btn-ai-alt ${ !isPro ? 'disabled' : '' }" data-id="${attachment.id}" data-url="${attachment.url}">
 									${cyphex_image_hunter_vars.labels.aiAlt} ${ !isPro ? '🔒' : '' }
 								</button>
-								<p class="description">${ !isPro ? cyphex_image_hunter_vars.labels.proRequired : 'Uses your BYOAPI (Replicate)' }</p>
+								<button type="button" class="button button-secondary cyphex-sidebar-btn-webp ${ !isPro ? 'disabled' : '' }" data-id="${attachment.id}">
+									${cyphex_image_hunter_vars.labels.webp} ${ !isPro ? '🔒' : '' }
+								</button>
+								<p class="description" style="width: 100%; margin-top: 5px;">${ !isPro ? cyphex_image_hunter_vars.labels.proRequired : 'Uses your BYOAPI (Replicate)' }</p>
 							</div>
 						</label>
 					</div>
 				`;
 
-				this.$el.find( '.settings' ).append( buttonsHtml );
+				if ( this.$el.find( '.cyphex-sidebar-actions' ).length === 0 ) {
+					this.$el.find( '.settings' ).append( buttonsHtml );
+				}
 				return this;
 			};
 		} );
@@ -668,6 +673,31 @@ jQuery( document ).ready( function ( $ ) {
 			} ).fail( function( response ) {
 				$container.find( '.description' ).text( 'Error: ' + ( response.data || 'Failed' ) );
 				$btn.prop( 'disabled', false ).text( cyphex_image_hunter_vars.labels.aiAlt );
+			} );
+		} );
+		$( document ).on( 'click', '.cyphex-sidebar-btn-webp', function( e ) {
+			e.preventDefault();
+			if ( $( this ).hasClass( 'disabled' ) ) {
+				alert( cyphex_image_hunter_vars.labels.proRequired );
+				return;
+			}
+
+			var $btn = $( this );
+			var id = $btn.data( 'id' );
+			var $container = $btn.closest( '.value' );
+			
+			$btn.prop( 'disabled', true ).text( '...' );
+			$container.find( '.description' ).text( 'Optimizing...' );
+
+			wp.ajax.post( 'cyphex_bulk_webp_process', {
+				nonce: cyphex_image_hunter_vars.nonce,
+				attachment_id: id
+			} ).done( function( response ) {
+				$container.find( '.description' ).text( 'Optimized to WebP!' );
+				$btn.text( 'Done' );
+			} ).fail( function( response ) {
+				$container.find( '.description' ).text( 'Error: ' + ( response.data || 'Failed' ) );
+				$btn.prop( 'disabled', false ).text( cyphex_image_hunter_vars.labels.webp );
 			} );
 		} );
 	};
