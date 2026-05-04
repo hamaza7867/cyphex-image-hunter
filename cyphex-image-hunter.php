@@ -52,11 +52,6 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 
 			// Plugin Action Links
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ));
-
-			// Pro Actions
-			if ( $this->pro ) {
-				add_action( 'wp_ajax_cyphex_activate_license', array( $this->pro, 'ajax_activate_license' ) );
-			}
 		}
 
 		private function includes() {
@@ -1339,6 +1334,24 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					update_post_meta($attachment_id, '_wp_attachment_image_alt', sanitize_text_field( $meta['alt_text'] ?? ''));
 				}
 			}
+		}
+
+		public function render_bulk_progress_modal() {
+			?>
+			<div id="cyphex-bulk-progress-modal" style="display:none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); align-items: center; justify-content: center;">
+				<div style="background: #fff; width: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); text-align: center;">
+					<h3 id="cyphex-bulk-progress-title" style="margin: 0 0 10px 0; color: #1e293b; font-size: 22px; font-weight: 800;"><?php esc_html_e( 'Optimizing Your Library', 'cyphex-image-hunter' ); ?></h3>
+					<p id="cyphex-bulk-progress-count" style="color: #64748b; font-size: 14px; margin-bottom: 25px;">0 / 0</p>
+					
+					<div id="cyphex-bulk-progress-bar" style="width: 100%; height: 10px; background: #f1f5f9; border-radius: 5px; overflow: hidden; margin-bottom: 20px;">
+						<div id="cyphex-bulk-progress-bar-inner" style="width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%); transition: width 0.3s ease;"></div>
+					</div>
+					
+					<p id="cyphex-bulk-progress-timer" style="color: #1e293b; font-weight: 600; font-size: 14px;"><?php esc_html_e( 'Initializing...', 'cyphex-image-hunter' ); ?></p>
+					<p style="color: #94a3b8; font-size: 12px; margin-top: 15px;"><?php esc_html_e( 'Please keep this tab open until the process is complete.', 'cyphex-image-hunter' ); ?></p>
+				</div>
+			</div>
+			<?php
 		}
 	}
 
