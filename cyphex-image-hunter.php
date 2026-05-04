@@ -1400,24 +1400,40 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			check_ajax_referer( 'cyphex_image_hunter_nonce', 'nonce' );
 			if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Forbidden' );
 
-			$type = isset( $_POST['scan_type'] ) ? sanitize_text_field( $_POST['scan_type'] ) : '';
+			$type = isset( $_POST['scan_type'] ) ? sanitize_text_field( wp_unslash( $_POST['scan_type'] ) ) : '';
 			
-			global $wpdb;
 			$results = array();
 
 			if ( 'webp' === $type ) {
-				$query = "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'attachment' AND post_mime_type IN ('image/jpeg', 'image/png')";
-				$ids = $wpdb->get_col( $query );
-				$results = array_map( 'absint', $ids );
+				$results = get_posts( array(
+					'post_type'      => 'attachment',
+					'post_mime_type' => array( 'image/jpeg', 'image/png' ),
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+				) );
 			} elseif ( 'meta' === $type ) {
-				// Find images without Alt text
-				$query = "SELECT p.ID FROM {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_wp_attachment_image_alt' WHERE p.post_type = 'attachment' AND p.post_mime_type LIKE 'image/%' AND (pm.meta_value IS NULL OR pm.meta_value = '')";
-				$ids = $wpdb->get_col( $query );
-				$results = array_map( 'absint', $ids );
+				$results = get_posts( array(
+					'post_type'      => 'attachment',
+					'post_mime_type' => 'image',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'meta_query'     => array(
+						'relation' => 'OR',
+						array(
+							'key'     => '_wp_attachment_image_alt',
+							'compare' => 'NOT EXISTS',
+						),
+						array(
+							'key'     => '_wp_attachment_image_alt',
+							'value'   => '',
+							'compare' => '=',
+						),
+					),
+				) );
 			}
 
 			wp_send_json_success( array( 
-				'ids' => $results,
+				'ids' => array_map( 'absint', $results ),
 				'count' => count( $results )
 			) );
 		}
