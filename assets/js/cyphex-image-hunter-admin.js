@@ -808,5 +808,99 @@ jQuery( document ).ready( function ( $ ) {
 		}
 
 		processNext();
+
+	// --- 8. Bulk Toolkit Logic ---
+	var bulkQueue = [];
+	var bulkTotal = 0;
+	var bulkCurrentAction = '';
+
+	function processToolkitQueue() {
+		if ( bulkQueue.length === 0 ) {
+			$( '#cyphex-bulk-progress-title' ).text( 'Finished!' );
+			$( '#cyphex-bulk-progress-timer' ).text( 'All tasks completed successfully.' );
+			setTimeout( function() { 
+				$( '#cyphex-bulk-progress-modal' ).fadeOut();
+				location.reload(); 
+			}, 2000 );
+			return;
+		}
+
+		var id = bulkQueue.shift();
+		var progress = ( ( bulkTotal - bulkQueue.length ) / bulkTotal ) * 100;
+		$( '#cyphex-bulk-progress-bar-inner' ).css( 'width', progress + '%' );
+		$( '#cyphex-bulk-progress-count' ).text( ( bulkTotal - bulkQueue.length ) + ' / ' + bulkTotal );
+
+		var action = ( bulkCurrentAction === 'webp' ) ? 'cyphex_bulk_webp_process' : 'cyphex_image_hunter_ai_alt_text';
+		
+		wp.ajax.post( action, {
+			nonce: cyphex_image_hunter_vars.nonce,
+			attachment_id: id
+		} ).always( function() {
+			processToolkitQueue();
+		} );
+	}
+
+	$( '#cyphex-scan-webp' ).on( 'click', function() {
+		var $btn = $( this );
+		$btn.prop( 'disabled', true ).text( 'Scanning...' );
+		wp.ajax.post( 'cyphex_bulk_toolkit_scan', {
+			nonce: cyphex_image_hunter_vars.nonce,
+			scan_type: 'webp'
+		} ).done( function( response ) {
+			$( '#cyphex-webp-stats' ).text( response.count + ' images found that can be optimized to WebP.' );
+			$btn.prop( 'disabled', false ).text( 'Rescan' );
+			$btn.data( 'ids', response.ids );
+		} ).fail( function() {
+			$btn.prop( 'disabled', false ).text( 'Scan failed' );
+		} );
+	} );
+
+	$( '#cyphex-start-bulk-webp-all' ).on( 'click', function() {
+		if ( $( this ).hasClass( 'disabled' ) ) return;
+		var ids = $( '#cyphex-scan-webp' ).data( 'ids' );
+		if ( ! ids || ids.length === 0 ) {
+			alert( 'Please scan the library first.' );
+			return;
+		}
+
+		bulkQueue = [...ids];
+		bulkTotal = ids.length;
+		bulkCurrentAction = 'webp';
+
+		$( '#cyphex-bulk-progress-modal' ).css( 'display', 'flex' ).hide().fadeIn();
+		$( '#cyphex-bulk-progress-title' ).text( 'Converting Library to WebP' );
+		processToolkitQueue();
+	} );
+
+	$( '#cyphex-scan-meta' ).on( 'click', function() {
+		var $btn = $( this );
+		$btn.prop( 'disabled', true ).text( 'Scanning...' );
+		wp.ajax.post( 'cyphex_bulk_toolkit_scan', {
+			nonce: cyphex_image_hunter_vars.nonce,
+			scan_type: 'meta'
+		} ).done( function( response ) {
+			$( '#cyphex-meta-stats' ).text( response.count + ' images found missing SEO metadata.' );
+			$btn.prop( 'disabled', false ).text( 'Rescan' );
+			$btn.data( 'ids', response.ids );
+		} ).fail( function() {
+			$btn.prop( 'disabled', false ).text( 'Scan failed' );
+		} );
+	} );
+
+	$( '#cyphex-start-bulk-meta-all' ).on( 'click', function() {
+		if ( $( this ).hasClass( 'disabled' ) ) return;
+		var ids = $( '#cyphex-scan-meta' ).data( 'ids' );
+		if ( ! ids || ids.length === 0 ) {
+			alert( 'Please scan the library first.' );
+			return;
+		}
+
+		bulkQueue = [...ids];
+		bulkTotal = ids.length;
+		bulkCurrentAction = 'meta';
+
+		$( '#cyphex-bulk-progress-modal' ).css( 'display', 'flex' ).hide().fadeIn();
+		$( '#cyphex-bulk-progress-title' ).text( 'Generating AI Metadata' );
+		processToolkitQueue();
 	} );
 } );

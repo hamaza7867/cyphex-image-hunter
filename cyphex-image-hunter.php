@@ -45,6 +45,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			add_action( 'wp_ajax_cyphex_image_hunter_inpainting', array( $this, 'cyphex_handle_ajax_inpainting' ));
 			add_action( 'wp_ajax_cyphex_image_hunter_ai_alt_text', array( $this, 'cyphex_handle_ajax_ai_alt_text' ));
 			add_action( 'wp_ajax_cyphex_bulk_webp_process', array( $this, 'cyphex_handle_ajax_bulk_webp_process' ));
+			add_action( 'wp_ajax_cyphex_bulk_toolkit_scan', array( $this, 'cyphex_handle_ajax_toolkit_scan' ));
 			
 			// Bulk Actions
 			add_filter( 'bulk_actions-upload', array( $this, 'register_bulk_actions' ));
@@ -76,6 +77,14 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 				'cyphex-image-hunter',
 				array( $this, 'render_settings_page' )
 			);
+			add_submenu_page(
+				'cyphex-image-hunter',
+				__( 'Bulk Toolkit', 'cyphex-image-hunter' ),
+				__( 'Bulk Toolkit', 'cyphex-image-hunter' ),
+				'manage_options',
+				'cyphex-bulk-toolkit',
+				array( $this, 'render_bulk_toolkit_page' )
+			);
 		}
 
 		public function register_settings() {
@@ -84,6 +93,74 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_pixabay_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_replicate_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_auto_credit', array('sanitize_callback' => 'absint'));
+		}
+
+		public function render_bulk_toolkit_page() {
+			if ( ! current_user_can( 'manage_options' ) ) return;
+			$is_pro = cyphex_is_pro();
+			?>
+			<div class="wrap" style="background: #f8fafc; min-height: 100vh; padding: 20px;">
+				<div style="display: flex; align-items: center; margin-bottom: 30px; gap: 15px;">
+					<img src="<?php echo esc_url( plugins_url( 'assets/images/logo.jpeg', __FILE__ ) ); ?>" style="width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" />
+					<div>
+						<h1 style="margin: 0; font-size: 32px; font-weight: 800; color: #1e293b;"><?php esc_html_e( 'Bulk AI Toolkit', 'cyphex-image-hunter' ); ?></h1>
+						<p style="margin: 0; color: #64748b; font-size: 16px;"><?php esc_html_e( 'Professional management for your entire media library.', 'cyphex-image-hunter' ); ?></p>
+					</div>
+				</div>
+
+				<?php if ( ! $is_pro ) : ?>
+					<div style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); padding: 30px; border-radius: 20px; color: #fff; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.2);">
+						<div>
+							<h2 style="margin: 0; color: #fff; font-size: 24px; font-weight: 800;"><?php esc_html_e( 'Unlock the Power of Automation', 'cyphex-image-hunter' ); ?></h2>
+							<p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;"><?php esc_html_e( 'Bulk WebP conversion and AI metadata generation are available in the Pro version.', 'cyphex-image-hunter' ); ?></p>
+						</div>
+						<a href="<?php echo esc_url( admin_url( 'options-general.php?page=cyphex-image-hunter&tab=pro' ) ); ?>" class="button" style="background: #fff; color: #1e40af; border: none; height: 48px; padding: 0 30px; border-radius: 12px; font-weight: 800; font-size: 16px; display: flex; align-items: center;"><?php esc_html_e( 'Upgrade to Pro', 'cyphex-image-hunter' ); ?></a>
+					</div>
+				<?php endif; ?>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px;">
+					<!-- WebP Optimization Card -->
+					<div class="card" style="margin: 0; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+						<div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+							<div style="background: #eff6ff; color: #3b82f6; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🚀</div>
+							<h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: 800;"><?php esc_html_e( 'Bulk WebP Conversion', 'cyphex-image-hunter' ); ?></h3>
+						</div>
+						<p style="color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 30px;"><?php esc_html_e( 'Instantly convert your entire JPG/PNG library to WebP format. This reduces file sizes by up to 80% without losing quality, significantly improving your site speed and SEO scores.', 'cyphex-image-hunter' ); ?></p>
+						
+						<div style="background: #f8fafc; padding: 25px; border-radius: 16px; margin-bottom: 30px; border: 1px dashed #cbd5e1;">
+							<p id="cyphex-webp-stats" style="margin: 0; font-weight: 700; color: #1e293b; font-size: 14px;"><?php esc_html_e( 'Ready to scan library...', 'cyphex-image-hunter' ); ?></p>
+						</div>
+
+						<div style="display: flex; gap: 15px;">
+							<button type="button" id="cyphex-scan-webp" class="button" style="height: 48px; padding: 0 25px; border-radius: 12px; font-weight: 700;"><?php esc_html_e( 'Scan Library', 'cyphex-image-hunter' ); ?></button>
+							<button type="button" id="cyphex-start-bulk-webp-all" class="button button-primary <?php echo ! $is_pro ? 'disabled' : ''; ?>" style="height: 48px; padding: 0 30px; border-radius: 12px; font-weight: 800; background: #3b82f6; border: none;"><?php esc_html_e( 'Optimize All (WebP )', 'cyphex-image-hunter' ); ?> <?php echo ! $is_pro ? '🔒' : ''; ?></button>
+						</div>
+					</div>
+
+					<!-- AI Metadata Card -->
+					<div class="card" style="margin: 0; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+						<div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+							<div style="background: #f5f3ff; color: #8b5cf6; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📝</div>
+							<h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: 800;"><?php esc_html_e( 'Bulk AI Metadata', 'cyphex-image-hunter' ); ?></h3>
+						</div>
+						<p style="color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 30px;"><?php esc_html_e( 'Automatically generate Alt-Text, Titles, and Descriptions for all images in your library using advanced AI Vision. Never leave an image without SEO metadata again.', 'cyphex-image-hunter' ); ?></p>
+						
+						<div style="background: #f8fafc; padding: 25px; border-radius: 16px; margin-bottom: 30px; border: 1px dashed #cbd5e1;">
+							<p id="cyphex-meta-stats" style="margin: 0; font-weight: 700; color: #1e293b; font-size: 14px;"><?php esc_html_e( 'Ready to scan library...', 'cyphex-image-hunter' ); ?></p>
+						</div>
+
+						<div style="display: flex; gap: 15px;">
+							<button type="button" id="cyphex-scan-meta" class="button" style="height: 48px; padding: 0 25px; border-radius: 12px; font-weight: 700;"><?php esc_html_e( 'Scan Library', 'cyphex-image-hunter' ); ?></button>
+							<button type="button" id="cyphex-start-bulk-meta-all" class="button button-primary <?php echo ! $is_pro ? 'disabled' : ''; ?>" style="height: 48px; padding: 0 30px; border-radius: 12px; font-weight: 800; background: #8b5cf6; border: none;"><?php esc_html_e( 'Generate All (AI )', 'cyphex-image-hunter' ); ?> <?php echo ! $is_pro ? '🔒' : ''; ?></button>
+						</div>
+					</div>
+				</div>
+
+				<div style="margin-top: 40px; text-align: center; color: #94a3b8; font-size: 14px;">
+					<p><?php esc_html_e( 'Cyphex Bulk Toolkit uses sequential processing to ensure your server remains responsive.', 'cyphex-image-hunter' ); ?></p>
+				</div>
+			</div>
+			<?php
 		}
 
 		public function render_settings_page() {
@@ -1260,6 +1337,32 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			}
 
 			wp_send_json_success( 'Converted to WebP' );
+		}
+
+		public function cyphex_handle_ajax_toolkit_scan() {
+			check_ajax_referer( 'cyphex_image_hunter_nonce', 'nonce' );
+			if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Forbidden' );
+
+			$type = isset( $_POST['scan_type'] ) ? sanitize_text_field( $_POST['scan_type'] ) : '';
+			
+			global $wpdb;
+			$results = array();
+
+			if ( 'webp' === $type ) {
+				$query = "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'attachment' AND post_mime_type IN ('image/jpeg', 'image/png')";
+				$ids = $wpdb->get_col( $query );
+				$results = array_map( 'absint', $ids );
+			} elseif ( 'meta' === $type ) {
+				// Find images without Alt text
+				$query = "SELECT p.ID FROM {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_wp_attachment_image_alt' WHERE p.post_type = 'attachment' AND p.post_mime_type LIKE 'image/%' AND (pm.meta_value IS NULL OR pm.meta_value = '')";
+				$ids = $wpdb->get_col( $query );
+				$results = array_map( 'absint', $ids );
+			}
+
+			wp_send_json_success( array( 
+				'ids' => $results,
+				'count' => count( $results )
+			) );
 		}
 
 		// Custom Helper to Force Exact Dimensions (Supports Upscaling )
