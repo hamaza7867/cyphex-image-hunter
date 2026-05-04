@@ -34,6 +34,11 @@ class Cyphex_Pro_Manager {
 	 * Check if the Pro version is active.
 	 */
 	public function is_pro() {
+		$license = get_option( self::LICENSE_OPTION );
+		if ( 'CYPHEX-DEV-MASTER' === $license ) {
+			return true; // Developer Master Key bypass
+		}
+
 		$status = get_option( self::STATUS_OPTION );
 		return ( 'valid' === $status || 'active' === $status );
 	}
