@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.6.6
+ * Version:			  1.7.0
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -1348,7 +1348,11 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 	 * @return bool
 	 */
 	function cyphex_is_pro() {
-		return defined( 'CYPHEX_IMAGE_HUNTER_PRO' ) && CYPHEX_IMAGE_HUNTER_PRO;
+		global $cyphex_image_hunter_plugin;
+		if ( isset( $cyphex_image_hunter_plugin->pro ) ) {
+			return $cyphex_image_hunter_plugin->pro->is_pro();
+		}
+		return false;
 	}
 
 	$cyphex_image_hunter_plugin = new Cyphex_Image_Hunter_Plugin();
