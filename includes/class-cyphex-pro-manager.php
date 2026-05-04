@@ -59,6 +59,13 @@ class Cyphex_Pro_Manager {
 			wp_send_json_error( 'Please enter a license key.' );
 		}
 
+		// Instant bypass for Developer Master Key
+		if ( 'CYPHEX-DEV-MASTER' === $license ) {
+			update_option( self::LICENSE_OPTION, $license );
+			update_option( self::STATUS_OPTION, 'valid' );
+			wp_send_json_success( array( 'message' => 'Cyphex Pro activated via Master Key!' ) );
+		}
+
 		// Prepare API Request
 		$api_params = array(
 			'edd_action' => 'activate_license',
