@@ -3,7 +3,7 @@
  * Plugin Name:		  Cyphex Image Hunter
  * Plugin URI:		  https://wordpress.org/plugins/cyphex-image-hunter/
  * Description:		  Automatically finds and inserts AI-generated images into your posts.
- * Version:			  1.7.0
+ * Version:			  1.8.0
  * Requires at least: 5.8
  * Requires PHP:	  7.4
  * Author:			  Ali hamza
@@ -493,13 +493,13 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_script('puter-js', 'https://js.puter.com/v2/', array(), '2.0', true );
 			
 			// Enqueue CSS
-			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.6.6');
+			wp_enqueue_style( 'cyphex-image-hunter-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/cyphex-image-hunter-admin.css', array(), '1.8.0' );
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.7.0', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin', plugin_dir_url( __FILE__ ) . 'assets/js/cyphex-image-hunter-admin.js', array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.8.0', true );
 			
 			// Localize script with translatable strings
-			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(
+			wp_localize_script( 'cyphex-image-hunter-admin', 'cyphex_image_hunter_vars', array(
 				'nonce'	 => wp_create_nonce( 'cyphex_image_hunter_nonce' ),
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'isPro'	  => cyphex_is_pro(),
@@ -1417,7 +1417,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					'post_mime_type' => 'image',
 					'posts_per_page' => -1,
 					'fields'         => 'ids',
-					'meta_query'     => array(
+					'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 						'relation' => 'OR',
 						array(
 							'key'     => '_wp_attachment_image_alt',
