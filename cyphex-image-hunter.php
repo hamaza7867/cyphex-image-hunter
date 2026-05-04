@@ -1013,7 +1013,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			if ( ! $replicate_key ) wp_send_json_error( 'Missing Replicate API Key' );
 
 			$image_url = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
-			$mask_data = isset( $_POST['mask'] ) ? $_POST['mask'] : ''; // Base64 mask
+			$mask_data = isset( $_POST['mask'] ) ? sanitize_textarea_field( wp_unslash( $_POST['mask'] ) ) : ''; // Base64 mask
 			$prompt = isset( $_POST['prompt'] ) ? sanitize_text_field( wp_unslash( $_POST['prompt'] ) ) : '';
 
 			if ( ! $image_url || ! $mask_data || ! $prompt ) {
