@@ -17,7 +17,7 @@ class Cyphex_Pro_Manager {
 
 	const LICENSE_OPTION    = 'cyphex_image_hunter_license_key';
 	const STATUS_OPTION     = 'cyphex_image_hunter_pro_status';
-	const STORE_URL         = 'https://cyphex.com'; // Your official store URL
+	const STORE_URL         = 'https://cyphex.agency'; // Your official store URL
 	const ITEM_ID           = 12345; // Your EDD Download ID
 
 	public function __construct() {
