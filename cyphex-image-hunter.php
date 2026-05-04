@@ -43,10 +43,12 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			add_action( 'wp_ajax_cyphex_image_hunter_remove_bg', array( $this, 'cyphex_handle_ajax_remove_bg' ));
 			add_action( 'wp_ajax_cyphex_image_hunter_inpainting', array( $this, 'cyphex_handle_ajax_inpainting' ));
 			add_action( 'wp_ajax_cyphex_image_hunter_ai_alt_text', array( $this, 'cyphex_handle_ajax_ai_alt_text' ));
+			add_action( 'wp_ajax_cyphex_bulk_webp_process', array( $this, 'cyphex_handle_ajax_bulk_webp_process' ));
 			
 			// Bulk Actions
 			add_filter( 'bulk_actions-upload', array( $this, 'register_bulk_actions' ));
 			add_filter( 'handle_bulk_actions-upload', array( $this, 'handle_bulk_actions' ), 10, 3 );
+			add_action( 'admin_footer', array( $this, 'render_bulk_progress_modal' ) );
 
 			// Plugin Action Links
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ));
@@ -439,6 +441,10 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					'options'			=> esc_js( __( 'Options', 'cyphex-image-hunter' ) ),
 					'aiOptimize'		=> esc_js( __( 'AI Optimize', 'cyphex-image-hunter' ) ),
 					'webp'				=> esc_js( __( 'WebP', 'cyphex-image-hunter' ) ),
+					'removeBg'			=> esc_js( __( 'Remove BG', 'cyphex-image-hunter' ) ),
+					'inpaint'			=> esc_js( __( 'AI Inpaint', 'cyphex-image-hunter' ) ),
+					'aiAlt'				=> esc_js( __( 'AI Alt-Text', 'cyphex-image-hunter' ) ),
+					'proRequired'		=> esc_js( __( 'Cyphex Pro License Required', 'cyphex-image-hunter' ) ),
 					'autoCredit'		=> esc_js( __( 'Auto-Credit', 'cyphex-image-hunter' ) ),
 					'aiAlt'				=> esc_js( __( 'AI Alt-Text', 'cyphex-image-hunter' ) ),
 					'aiDesc'			=> esc_js( __( 'AI Description', 'cyphex-image-hunter' ) ),
@@ -1149,6 +1155,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 		public function register_bulk_actions( $bulk_actions ) {
 			if ( cyphex_is_pro() ) {
 				$bulk_actions['cyphex_bulk_ai_alt'] = __( 'Generate AI Alt-Text (Cyphex)', 'cyphex-image-hunter' );
+				$bulk_actions['cyphex_bulk_webp']   = __( 'Convert to WebP (Cyphex)', 'cyphex-image-hunter' );
 			}
 			return $bulk_actions;
 		}
@@ -1226,6 +1233,46 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			if ( $desc ) {
 				wp_update_post( array( 'ID' => $attachment_id, 'post_content' => $desc ) );
 			}
+		}
+
+		public function cyphex_handle_ajax_bulk_webp_process() {
+			check_ajax_referer( 'cyphex_image_hunter_nonce', 'nonce' );
+			if ( ! cyphex_is_pro() || ! current_user_can( 'upload_files' ) ) {
+				wp_send_json_error( 'Pro version required' );
+			}
+
+			$attachment_id = isset( $_POST['attachment_id'] ) ? absint( $_POST['attachment_id'] ) : 0;
+			if ( ! $attachment_id ) wp_send_json_error( 'Invalid ID' );
+
+			$file_path = get_attached_file( $attachment_id );
+			if ( ! $file_path || ! file_exists( $file_path ) ) wp_send_json_error( 'File not found' );
+
+			$mime_type = get_post_mime_type( $attachment_id );
+			if ( $mime_type === 'image/webp' ) wp_send_json_success( 'Already WebP' );
+
+			$editor = wp_get_image_editor( $file_path );
+			if ( is_wp_error( $editor ) ) wp_send_json_error( 'Editor error' );
+
+			$path_parts = pathinfo( $file_path );
+			$new_path = $path_parts['dirname'] . '/' . $path_parts['filename'] . '.webp';
+
+			$saved = $editor->save( $new_path, 'image/webp' );
+			if ( is_wp_error( $saved ) ) wp_send_json_error( 'Save failed' );
+
+			// Update attachment metadata
+			update_attached_file( $attachment_id, $new_path );
+			wp_update_post( array(
+				'ID'             => $attachment_id,
+				'post_mime_type' => 'image/webp',
+				'guid'           => str_replace( '.' . $path_parts['extension'], '.webp', get_the_guid( $attachment_id ) )
+			) );
+
+			// Delete old file
+			if ( file_exists( $file_path ) ) {
+				unlink( $file_path );
+			}
+
+			wp_send_json_success( 'Converted to WebP' );
 		}
 
 		// Custom Helper to Force Exact Dimensions (Supports Upscaling )

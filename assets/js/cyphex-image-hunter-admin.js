@@ -720,4 +720,63 @@ jQuery( document ).ready( function ( $ ) {
 			$btn.prop( 'disabled', false ).text( 'Deactivate License' );
 		} );
 	} );
+
+	// --- 7. Bulk WebP Logic ---
+	$( '#doaction, #doaction2' ).on( 'click', function( e ) {
+		var $selector = $( this ).siblings( 'select' );
+		if ( $selector.val() !== 'cyphex_bulk_webp' ) return;
+
+		e.preventDefault();
+
+		var selectedIds = [];
+		$( 'tbody th.check-column input[type="checkbox"]:checked' ).each( function() {
+			selectedIds.push( $( this ).val() );
+		} );
+
+		if ( selectedIds.length === 0 ) {
+			alert( 'Please select at least one image.' );
+			return;
+		}
+
+		// Initialize Modal
+		var $modal = $( '#cyphex-bulk-progress-modal' );
+		$modal.show();
+		
+		var total = selectedIds.length;
+		var current = 0;
+		var startTime = Date.now();
+
+		function processNext() {
+			if ( current >= total ) {
+				$( '#cyphex-bulk-progress-title' ).text( 'Conversion Complete!' );
+				$( '#cyphex-bulk-progress-timer' ).text( 'Finished ' + total + ' images.' );
+				setTimeout( function() { location.reload(); }, 1500 );
+				return;
+			}
+
+			var id = selectedIds[current];
+			var progress = Math.round( ( current / total ) * 100 );
+			
+			$( '#cyphex-bulk-progress-bar-inner' ).css( 'width', progress + '%' );
+			$( '#cyphex-bulk-progress-count' ).text( ( current + 1 ) + ' / ' + total );
+
+			// Estimate time
+			if ( current > 0 ) {
+				var elapsed = Date.now() - startTime;
+				var perItem = elapsed / current;
+				var remaining = Math.round( ( ( total - current ) * perItem ) / 1000 );
+				$( '#cyphex-bulk-progress-timer' ).text( 'Est. remaining: ' + remaining + 's' );
+			}
+
+			wp.ajax.post( 'cyphex_bulk_webp_process', {
+				nonce: cyphex_image_hunter_vars.nonce,
+				attachment_id: id
+			} ).always( function() {
+				current++;
+				processNext();
+			} );
+		}
+
+		processNext();
+	} );
 } );
