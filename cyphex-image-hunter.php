@@ -427,8 +427,12 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					'statusRefining'	=> esc_js( __( 'Refining with AI...', 'cyphex-image-hunter' ) ),
 					'errorSearch'		=> esc_js( __( 'Search failed. Please try again.', 'cyphex-image-hunter' ) ),
 					'errorServer'		=> esc_js( __( 'Server error. Please check your connection.', 'cyphex-image-hunter' ) ),
-					'errorPuter'		=> esc_js( __( 'AI Service (Puter) not available.', 'cyphex-image-hunter' ) ),
-					'errorRefine'		=> esc_js( __( 'AI Refinement failed.', 'cyphex-image-hunter' ) ),
+					'aiAlt'				=> esc_js( __( 'AI Alt-Text', 'cyphex-image-hunter' ) ),
+					'aiDesc'			=> esc_js( __( 'AI Description', 'cyphex-image-hunter' ) ),
+					'removeBg'			=> esc_js( __( 'Remove Background', 'cyphex-image-hunter' ) ),
+					'inpaint'			=> esc_js( __( 'AI Inpaint', 'cyphex-image-hunter' ) ),
+					'statusRemovingBg'  => esc_js( __( 'AI Removing Background...', 'cyphex-image-hunter' ) ),
+					'statusInpainting'  => esc_js( __( 'AI Inpainting area...', 'cyphex-image-hunter' ) ),
 				),
 			) );
 		}
@@ -438,29 +442,6 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 				return;
 			}
 			$this->cyphex_enqueue_media_assets();
-		}
-					'refinePrompt'		=> esc_js( __( 'How should I modify this image? (e.g., "Make it more professional", "Change color to blue")', 'cyphex-image-hunter' ) ),
-					'description'		=> esc_js( __( 'Description', 'cyphex-image-hunter' ) ),
-					'sourceModel'		=> esc_js( __( 'Source / Model', 'cyphex-image-hunter' ) ),
-					'dimensions'		=> esc_js( __( 'Dimensions (WxH )', 'cyphex-image-hunter' ) ),
-					'maxKb'				=> esc_js( __( 'Max KB', 'cyphex-image-hunter' ) ),
-					'options'			=> esc_js( __( 'Options', 'cyphex-image-hunter' ) ),
-					'aiOptimize'		=> esc_js( __( 'AI Optimize', 'cyphex-image-hunter' ) ),
-					'webp'				=> esc_js( __( 'WebP', 'cyphex-image-hunter' ) ),
-					'removeBg'			=> esc_js( __( 'Remove BG', 'cyphex-image-hunter' ) ),
-					'inpaint'			=> esc_js( __( 'AI Inpaint', 'cyphex-image-hunter' ) ),
-					'aiAlt'				=> esc_js( __( 'AI Alt-Text', 'cyphex-image-hunter' ) ),
-					'proRequired'		=> esc_js( __( 'Cyphex Pro License Required', 'cyphex-image-hunter' ) ),
-					'autoCredit'		=> esc_js( __( 'Auto-Credit', 'cyphex-image-hunter' ) ),
-					'aiAlt'				=> esc_js( __( 'AI Alt-Text', 'cyphex-image-hunter' ) ),
-					'aiDesc'			=> esc_js( __( 'AI Description', 'cyphex-image-hunter' ) ),
-					'removeBg'			=> esc_js( __( 'Remove Background', 'cyphex-image-hunter' ) ),
-					'inpaint'			=> esc_js( __( 'AI Inpaint', 'cyphex-image-hunter' ) ),
-					'statusRemovingBg'  => esc_js( __( 'AI Removing Background...', 'cyphex-image-hunter' ) ),
-					'statusInpainting'  => esc_js( __( 'AI Inpainting area...', 'cyphex-image-hunter' ) ),
-					'proRequired'		=> esc_js( __( 'Pro version required for this feature.', 'cyphex-image-hunter' ) ),
-				),
-			) );
 		}
 
 		public function cyphex_print_assets_and_templates() {
