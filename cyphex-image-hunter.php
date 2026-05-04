@@ -51,6 +51,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			add_filter( 'bulk_actions-upload', array( $this, 'register_bulk_actions' ));
 			add_filter( 'handle_bulk_actions-upload', array( $this, 'handle_bulk_actions' ), 10, 3 );
 			add_action( 'admin_footer', array( $this, 'render_bulk_progress_modal' ) );
+			add_action( 'add_attachment', array( $this, 'cyphex_maybe_auto_convert_webp' ) );
 
 			// Plugin Action Links
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ));
@@ -93,6 +94,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_pixabay_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_replicate_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_auto_credit', array('sanitize_callback' => 'absint'));
+			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_auto_webp', array('sanitize_callback' => 'absint'));
 		}
 
 		public function render_bulk_toolkit_page() {
@@ -240,6 +242,13 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 													<input type="checkbox" name="cyphex_image_hunter_auto_credit" value="1" <?php checked(1, get_option( 'cyphex_image_hunter_auto_credit'), true ); ?> />
 													<?php esc_html_e( 'Automatically append "Photo by [Photographer] on [Platform]" to the image caption when inserted into WordPress.', 'cyphex-image-hunter'); ?>
 												</label>
+											</td>
+										</tr>
+										<tr valign="top">
+											<th scope="row" style="width: 200px; font-weight: 600;"><?php esc_html_e( 'Auto-WebP', 'cyphex-image-hunter'); ?> <span style="background: #10b981; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px; vertical-align: middle; margin-left: 5px;">PRO</span></th>
+											<td>
+												<input type="checkbox" name="cyphex_image_hunter_auto_webp" value="1" <?php checked( 1, get_option( 'cyphex_image_hunter_auto_webp' ) ); ?> <?php echo ! cyphex_is_pro() ? 'disabled' : ''; ?> />
+												<p class="description"><?php esc_html_e( 'Automatically convert all new JPG/PNG uploads to WebP format.', 'cyphex-image-hunter'); ?></p>
 											</td>
 										</tr>
 									</table>
@@ -1337,6 +1346,54 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			}
 
 			wp_send_json_success( 'Converted to WebP' );
+		}
+
+		public function cyphex_maybe_auto_convert_webp( $attachment_id ) {
+			if ( ! cyphex_is_pro() || ! get_option( 'cyphex_image_hunter_auto_webp' ) ) {
+				return;
+			}
+
+			// Avoid recursive loops
+			static $is_processing = false;
+			if ( $is_processing ) return;
+			$is_processing = true;
+
+			$file_path = get_attached_file( $attachment_id );
+			if ( ! $file_path || ! file_exists( $file_path ) ) {
+				$is_processing = false;
+				return;
+			}
+
+			$mime_type = get_post_mime_type( $attachment_id );
+			if ( ! in_array( $mime_type, array( 'image/jpeg', 'image/png' ) ) ) {
+				$is_processing = false;
+				return;
+			}
+
+			$editor = wp_get_image_editor( $file_path );
+			if ( is_wp_error( $editor ) ) {
+				$is_processing = false;
+				return;
+			}
+
+			$path_parts = pathinfo( $file_path );
+			$new_path = $path_parts['dirname'] . '/' . $path_parts['filename'] . '.webp';
+
+			$saved = $editor->save( $new_path, 'image/webp' );
+			if ( ! is_wp_error( $saved ) ) {
+				update_attached_file( $attachment_id, $new_path );
+				wp_update_post( array(
+					'ID'             => $attachment_id,
+					'post_mime_type' => 'image/webp',
+					'guid'           => str_replace( '.' . $path_parts['extension'], '.webp', get_the_guid( $attachment_id ) )
+				) );
+
+				if ( file_exists( $file_path ) ) {
+					wp_delete_file( $file_path );
+				}
+			}
+
+			$is_processing = false;
 		}
 
 		public function cyphex_handle_ajax_toolkit_scan() {
