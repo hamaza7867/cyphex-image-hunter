@@ -1264,7 +1264,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 
 			// Delete old file
 			if ( file_exists( $file_path ) ) {
-				unlink( $file_path );
+				wp_delete_file( $file_path );
 			}
 
 			wp_send_json_success( 'Converted to WebP' );
