@@ -11,6 +11,8 @@ jQuery( document ).ready( function ( $ ) {
 			'keydown #cyphex_image_hunter_search_input': 'searchOnEnter',
 			'click .cyphex_image_hunter_action_download': 'sideloadImage',
 			'click .cyphex_image_hunter_action_refine': 'refineImage',
+			'click .cyphex_image_hunter_action_remove_bg': 'removeBackground',
+			'click .cyphex_image_hunter_action_inpaint': 'inpaintImage',
 			'keydown': 'stopPropagation'
 		},
 
@@ -326,6 +328,166 @@ jQuery( document ).ready( function ( $ ) {
 				// Standard URL (Pexels, etc.)
 				uploadImage( url );
 			}
+		},
+
+		removeBackground: function( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+			if ( ! cyphex_image_hunter_vars.isPro ) {
+				alert( cyphex_image_hunter_vars.labels.proRequired );
+				return;
+			}
+
+			var $el = $( e.currentTarget ).closest( '.cyphex_image_hunter_attachment' );
+			var url = $el.data( 'url' );
+			var $status = this.$( '#cyphex_image_hunter_status' );
+			var self = this;
+
+			$status.show().text( cyphex_image_hunter_vars.labels.statusRemovingBg );
+			$el.css( 'opacity', '0.5' );
+
+			wp.ajax.post( 'cyphex_image_hunter_remove_bg', {
+				nonce: cyphex_image_hunter_vars.nonce,
+				image_url: url
+			} ).done( function( response ) {
+				$status.hide();
+				$el.css( 'opacity', '1' );
+				if ( response.url ) {
+					// Update image in view
+					$el.find( 'img' ).attr( 'src', response.url );
+					$el.data( 'url', response.url );
+					// Update state
+					self.controller.cyphex_image_hunter_state.resultsHTML = self.$( '#cyphex_image_hunter_results_list' ).html();
+				}
+			} ).fail( function( response ) {
+				alert( response.data || 'Failed to remove background' );
+				$status.hide();
+				$el.css( 'opacity', '1' );
+			} );
+		},
+
+		inpaintImage: function( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+			if ( ! cyphex_image_hunter_vars.isPro ) {
+				alert( cyphex_image_hunter_vars.labels.proRequired );
+				return;
+			}
+			
+			var $el = $( e.currentTarget ).closest( '.cyphex_image_hunter_attachment' );
+			var url = $el.data( 'url' );
+			var self = this;
+
+			// Initialize Mask Modal
+			var tmpl = wp.template( 'cyphex-image-hunter-mask-modal' );
+			var $modal = $( tmpl( { url: url } ) );
+			$( 'body' ).append( $modal );
+
+			// Initialize Canvas
+			var canvas = $modal.find( '#cyphex_mask_canvas' )[0];
+			var ctx = canvas.getContext( '2d' );
+			var $img = $modal.find( '#cyphex_mask_source_img' );
+			
+			$img.on( 'load', function() {
+				// Set canvas size to match image aspect ratio
+				var imgW = this.naturalWidth;
+				var imgH = this.naturalHeight;
+				var displayW = Math.min( 760, imgW );
+				var scale = displayW / imgW;
+				var displayH = imgH * scale;
+				
+				canvas.width = imgW;
+				canvas.height = imgH;
+				$( canvas ).css( { width: displayW + 'px', height: displayH + 'px' } );
+				$( canvas ).css( 'background-image', 'url(' + url + ')' );
+				
+				// Initialize Drawing
+				var drawing = false;
+				var lastX, lastY;
+
+				function getPos( e ) {
+					var rect = canvas.getBoundingClientRect();
+					var scaleX = canvas.width / rect.width;
+					var scaleY = canvas.height / rect.height;
+					return {
+						x: ( ( e.clientX || e.touches[0].clientX ) - rect.left ) * scaleX,
+						y: ( ( e.clientY || e.touches[0].clientY ) - rect.top ) * scaleY
+					};
+				}
+
+				$( canvas ).on( 'mousedown touchstart', function( e ) {
+					drawing = true;
+					var pos = getPos( e );
+					lastX = pos.x;
+					lastY = pos.y;
+				} );
+
+				$( canvas ).on( 'mousemove touchmove', function( e ) {
+					if ( ! drawing ) return;
+					e.preventDefault();
+					var pos = getPos( e );
+					var brushSize = $modal.find( '#cyphex_mask_brush_size' ).val();
+					
+					ctx.beginPath();
+					ctx.moveTo( lastX, lastY );
+					ctx.lineTo( pos.x, pos.y );
+					ctx.strokeStyle = 'white'; // Mask is white on black
+					ctx.lineWidth = brushSize;
+					ctx.lineCap = 'round';
+					ctx.stroke();
+					
+					lastX = pos.x;
+					lastY = pos.y;
+				} );
+
+				$( window ).on( 'mouseup touchend', function() { drawing = false; } );
+			} );
+
+			// Modal Actions
+			$modal.find( '.cyphex_mask_modal_close' ).on( 'click', function() { $modal.remove(); } );
+			$modal.find( '.cyphex_mask_modal_clear' ).on( 'click', function() { ctx.clearRect( 0, 0, canvas.width, canvas.height ); } );
+			
+			$modal.find( '.cyphex_mask_modal_submit' ).on( 'click', function() {
+				var promptText = $modal.find( '#cyphex_mask_prompt' ).val();
+				if ( ! promptText ) {
+					alert( 'Please enter a prompt' );
+					return;
+				}
+
+				// Create a final mask (Black background, white strokes)
+				var finalCanvas = document.createElement( 'canvas' );
+				finalCanvas.width = canvas.width;
+				finalCanvas.height = canvas.height;
+				var fCtx = finalCanvas.getContext( '2d' );
+				fCtx.fillStyle = 'black';
+				fCtx.fillRect( 0, 0, finalCanvas.width, finalCanvas.height );
+				fCtx.drawImage( canvas, 0, 0 );
+				var maskBase64 = finalCanvas.toDataURL( 'image/png' );
+
+				var $status = self.$( '#cyphex_image_hunter_status' );
+				$status.show().text( cyphex_image_hunter_vars.labels.statusInpainting );
+				$el.css( 'opacity', '0.5' );
+				$modal.remove();
+
+				wp.ajax.post( 'cyphex_image_hunter_inpainting', {
+					nonce: cyphex_image_hunter_vars.nonce,
+					image_url: url,
+					mask: maskBase64,
+					prompt: promptText
+				} ).done( function( response ) {
+					$status.hide();
+					$el.css( 'opacity', '1' );
+					if ( response.url ) {
+						$el.find( 'img' ).attr( 'src', response.url );
+						$el.data( 'url', response.url );
+						self.controller.cyphex_image_hunter_state.resultsHTML = self.$( '#cyphex_image_hunter_results_list' ).html();
+					}
+				} ).fail( function( response ) {
+					alert( response.data || 'Inpainting failed' );
+					$status.hide();
+					$el.css( 'opacity', '1' );
+				} );
+			} );
 		}
 	} );
 
@@ -401,4 +563,161 @@ jQuery( document ).ready( function ( $ ) {
     } catch ( e ) {
         console.error( 'Cyphex: Initialization failed', e );
     }
+
+	// --- 5. Media Library Sidebar Extension (Direct Functions) ---
+	var extendMediaSidebar = function() {
+		if ( typeof wp === 'undefined' || ! wp.media ) return;
+
+		// We extend both standard and two-column views
+		var SidebarViews = [
+			wp.media.view.Attachment.Details,
+			wp.media.view.Attachment.Details.TwoColumn
+		];
+
+		_.each( SidebarViews, function( ViewClass ) {
+			if ( ! ViewClass || ! ViewClass.prototype ) return;
+
+			var originalRender = ViewClass.prototype.render;
+			ViewClass.prototype.render = function() {
+				originalRender.apply( this, arguments );
+
+				var attachment = this.model.toJSON();
+				// Only show for images
+				if ( attachment.type !== 'image' ) return;
+
+				var isPro = cyphex_image_hunter_vars.isPro;
+				var buttonsHtml = `
+					<div class="cyphex-sidebar-actions">
+						<label class="setting">
+							<span class="name">Cyphex AI</span>
+							<div class="value">
+								<button type="button" class="button button-secondary cyphex-sidebar-btn-remove-bg ${ !isPro ? 'disabled' : '' }" data-id="${attachment.id}" data-url="${attachment.url}">
+									${cyphex_image_hunter_vars.labels.removeBg} ${ !isPro ? '🔒' : '' }
+								</button>
+								<button type="button" class="button button-secondary cyphex-sidebar-btn-ai-alt ${ !isPro ? 'disabled' : '' }" data-id="${attachment.id}" data-url="${attachment.url}">
+									${cyphex_image_hunter_vars.labels.aiAlt} ${ !isPro ? '🔒' : '' }
+								</button>
+								<p class="description">${ !isPro ? cyphex_image_hunter_vars.labels.proRequired : 'Uses your BYOAPI (Replicate)' }</p>
+							</div>
+						</label>
+					</div>
+				`;
+
+				this.$el.find( '.settings' ).append( buttonsHtml );
+				return this;
+			};
+		} );
+
+		// Handle Sidebar Button Clicks
+		$( document ).on( 'click', '.cyphex-sidebar-btn-remove-bg', function( e ) {
+			e.preventDefault();
+			if ( $( this ).hasClass( 'disabled' ) ) {
+				alert( cyphex_image_hunter_vars.labels.proRequired );
+				return;
+			}
+
+			var $btn = $( this );
+			var id = $btn.data( 'id' );
+			var url = $btn.data( 'url' );
+			var $container = $btn.closest( '.value' );
+			
+			$btn.prop( 'disabled', true ).text( '...' );
+			$container.find( '.description' ).text( cyphex_image_hunter_vars.labels.statusRemovingBg );
+
+			wp.ajax.post( 'cyphex_image_hunter_remove_bg', {
+				nonce: cyphex_image_hunter_vars.nonce,
+				image_url: url
+			} ).done( function( response ) {
+				if ( response.url ) {
+					// In a real scenario, we might want to replace the file or create a new one.
+					// For now, we provide the link and suggest downloading/replacing.
+					$container.find( '.description' ).html( 'Success! <a href="' + response.url + '" target="_blank">View Result</a>' );
+					$btn.text( 'Done' );
+				}
+			} ).fail( function( response ) {
+				$container.find( '.description' ).text( 'Error: ' + ( response.data || 'Failed' ) );
+				$btn.prop( 'disabled', false ).text( cyphex_image_hunter_vars.labels.removeBg );
+			} );
+		} );
+
+		$( document ).on( 'click', '.cyphex-sidebar-btn-ai-alt', function( e ) {
+			e.preventDefault();
+			if ( $( this ).hasClass( 'disabled' ) ) {
+				alert( cyphex_image_hunter_vars.labels.proRequired );
+				return;
+			}
+
+			var $btn = $( this );
+			var id = $btn.data( 'id' );
+			var url = $btn.data( 'url' );
+			var $container = $btn.closest( '.value' );
+			
+			$btn.prop( 'disabled', true ).text( '...' );
+			$container.find( '.description' ).text( 'AI Analyzing...' );
+
+			wp.ajax.post( 'cyphex_image_hunter_ai_alt_text', {
+				nonce: cyphex_image_hunter_vars.nonce,
+				attachment_id: id,
+				image_url: url
+			} ).done( function( response ) {
+				$container.find( '.description' ).html( 'Success! Alt: ' + response.alt );
+				$btn.text( 'Done' );
+				// Update native fields if possible
+				$( 'textarea[data-setting="alt"]' ).val( response.alt );
+				$( 'textarea[data-setting="description"]' ).val( response.desc );
+			} ).fail( function( response ) {
+				$container.find( '.description' ).text( 'Error: ' + ( response.data || 'Failed' ) );
+				$btn.prop( 'disabled', false ).text( cyphex_image_hunter_vars.labels.aiAlt );
+			} );
+		} );
+	};
+
+	try {
+		extendMediaSidebar();
+	} catch ( e ) {
+		console.error( 'Cyphex: Sidebar extension failed', e );
+	}
+
+	// --- 6. License Activation Logic ---
+	$( '#cyphex_activate_license_btn' ).on( 'click', function( e ) {
+		e.preventDefault();
+		var $btn = $( this );
+		var key = $( '#cyphex_license_key_field' ).val();
+
+		if ( ! key ) {
+			alert( 'Please enter a license key.' );
+			return;
+		}
+
+		$btn.prop( 'disabled', true ).text( 'Activating...' );
+
+		wp.ajax.post( 'cyphex_activate_license', {
+			nonce: cyphex_image_hunter_vars.nonce,
+			license_key: key
+		} ).done( function( response ) {
+			alert( response.message );
+			location.reload();
+		} ).fail( function( response ) {
+			alert( response.data || 'Activation failed.' );
+			$btn.prop( 'disabled', false ).text( 'Activate License' );
+		} );
+	} );
+
+	$( '#cyphex_deactivate_license_btn' ).on( 'click', function( e ) {
+		e.preventDefault();
+		if ( ! confirm( 'Are you sure you want to deactivate your license?' ) ) return;
+
+		var $btn = $( this );
+		$btn.prop( 'disabled', true ).text( 'Deactivating...' );
+
+		wp.ajax.post( 'cyphex_deactivate_license', {
+			nonce: cyphex_image_hunter_vars.nonce
+		} ).done( function( response ) {
+			alert( response.message );
+			location.reload();
+		} ).fail( function( response ) {
+			alert( 'Deactivation failed.' );
+			$btn.prop( 'disabled', false ).text( 'Deactivate License' );
+		} );
+	} );
 } );

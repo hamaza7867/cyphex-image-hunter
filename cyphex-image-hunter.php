@@ -40,6 +40,13 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			add_action( 'wp_ajax_cyphex_image_hunter_search', array( $this, 'cyphex_handle_ajax_search' ));
 			add_action( 'wp_ajax_cyphex_image_hunter_refine_prompt', array( $this, 'cyphex_handle_ajax_refine_prompt' ));
 			add_action( 'wp_ajax_cyphex_image_hunter_sideload', array( $this, 'cyphex_handle_ajax_sideload' ));
+			add_action( 'wp_ajax_cyphex_image_hunter_remove_bg', array( $this, 'cyphex_handle_ajax_remove_bg' ));
+			add_action( 'wp_ajax_cyphex_image_hunter_inpainting', array( $this, 'cyphex_handle_ajax_inpainting' ));
+			add_action( 'wp_ajax_cyphex_image_hunter_ai_alt_text', array( $this, 'cyphex_handle_ajax_ai_alt_text' ));
+			
+			// Bulk Actions
+			add_filter( 'bulk_actions-upload', array( $this, 'register_bulk_actions' ));
+			add_filter( 'handle_bulk_actions-upload', array( $this, 'handle_bulk_actions' ), 10, 3 );
 
 			// Plugin Action Links
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ));
@@ -77,6 +84,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_groq_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_pexels_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_pixabay_key', array('sanitize_callback' => 'sanitize_text_field'));
+			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_replicate_key', array('sanitize_callback' => 'sanitize_text_field'));
 			register_setting( 'cyphex_image_hunter_options', 'cyphex_image_hunter_auto_credit', array('sanitize_callback' => 'absint'));
 		}
 
@@ -144,6 +152,13 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 											</td>
 										</tr>
 										<tr valign="top">
+											<th scope="row" style="width: 200px; font-weight: 600;"><?php esc_html_e( 'Replicate API Key', 'cyphex-image-hunter'); ?></th>
+											<td>
+												<input type="password" name="cyphex_image_hunter_replicate_key" value="<?php echo esc_attr(get_option( 'cyphex_image_hunter_replicate_key')); ?>" class="regular-text" style="width: 100%;" placeholder="r8_..." />
+												<p class="description"><?php esc_html_e( 'Required for Pro features: Background Removal and Inpainting.', 'cyphex-image-hunter'); ?></p>
+											</td>
+										</tr>
+										<tr valign="top">
 											<th scope="row" style="width: 200px; font-weight: 600;"><?php esc_html_e( 'Auto-Credit Photographer', 'cyphex-image-hunter'); ?></th>
 											<td>
 												<label>
@@ -183,10 +198,34 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 				<?php if ( $active_tab == 'pro' ) : ?>
 					<div style="max-width: none; margin: 0;">
 						<!-- Hero Section -->
-						<div class="card" style="max-width: none; margin: 0 0 30px 0; border: none; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #fff; text-align: center; padding: 50px 20px;">
-							<img src="<?php echo esc_url( plugins_url( 'assets/images/logo.jpeg', __FILE__ ) ); ?>" style="width: 80px; height: 80px; border-radius: 20px; margin: 0 auto 20px; display: block; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);" />
-							<h2 style="color: #fff; font-size: 32px; margin: 0 0 10px 0;"><?php esc_html_e( 'Elevate Your Content Strategy', 'cyphex-image-hunter' ); ?></h2>
-							<p style="font-size: 18px; opacity: 0.9; max-width: 700px; margin: 0 auto;"><?php esc_html_e( 'Compare our upcoming plans and discover the power of advanced AI image generation directly in your WordPress dashboard.', 'cyphex-image-hunter' ); ?></p>
+						</div>
+
+						<!-- License Management Section -->
+						<div class="card" style="max-width: none; margin: 0 0 30px 0; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; background: #fff;">
+							<h3 style="margin-top: 0; font-size: 20px; color: #1e293b; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px;"><?php esc_html_e( 'Cyphex Pro Activation', 'cyphex-image-hunter' ); ?></h3>
+							
+							<div style="display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center;">
+								<div>
+									<p style="font-weight: 700; color: #1e293b; margin: 0;"><?php esc_html_e( 'Status', 'cyphex-image-hunter' ); ?></p>
+									<?php if ( $this->pro->is_pro() ) : ?>
+										<span style="background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-top: 5px;"><?php esc_html_e( 'Active', 'cyphex-image-hunter' ); ?></span>
+									<?php else : ?>
+										<span style="background: #fef2f2; color: #dc2626; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-top: 5px;"><?php esc_html_e( 'Inactive', 'cyphex-image-hunter' ); ?></span>
+									<?php endif; ?>
+								</div>
+								<div>
+									<label style="display: block; font-weight: 700; color: #1e293b; margin-bottom: 8px;"><?php esc_html_e( 'License Key', 'cyphex-image-hunter' ); ?></label>
+									<div style="display: flex; gap: 10px;">
+										<input type="text" id="cyphex_license_key_field" value="<?php echo esc_attr( get_option( 'cyphex_image_hunter_license_key' ) ); ?>" style="flex: 1; height: 44px; border-radius: 8px;" placeholder="XXXX-XXXX-XXXX-XXXX" <?php echo $this->pro->is_pro() ? 'disabled' : ''; ?> />
+										<?php if ( $this->pro->is_pro() ) : ?>
+											<button type="button" id="cyphex_deactivate_license_btn" class="button" style="height: 44px; border-radius: 8px;"><?php esc_html_e( 'Deactivate', 'cyphex-image-hunter' ); ?></button>
+										<?php else : ?>
+											<button type="button" id="cyphex_activate_license_btn" class="button button-primary" style="height: 44px; border-radius: 8px; background: #3b82f6; border-color: #3b82f6;"><?php esc_html_e( 'Activate License', 'cyphex-image-hunter' ); ?></button>
+										<?php endif; ?>
+									</div>
+									<p style="font-size: 12px; color: #64748b; margin-top: 10px;"><?php esc_html_e( 'Find your license key in your purchase confirmation email or dashboard at cyphex.com.', 'cyphex-image-hunter' ); ?></p>
+								</div>
+							</div>
 						</div>
 
 						<!-- Pricing / Feature Matrix -->
@@ -403,6 +442,11 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					'autoCredit'		=> esc_js( __( 'Auto-Credit', 'cyphex-image-hunter' ) ),
 					'aiAlt'				=> esc_js( __( 'AI Alt-Text', 'cyphex-image-hunter' ) ),
 					'aiDesc'			=> esc_js( __( 'AI Description', 'cyphex-image-hunter' ) ),
+					'removeBg'			=> esc_js( __( 'Remove Background', 'cyphex-image-hunter' ) ),
+					'inpaint'			=> esc_js( __( 'AI Inpaint', 'cyphex-image-hunter' ) ),
+					'statusRemovingBg'  => esc_js( __( 'AI Removing Background...', 'cyphex-image-hunter' ) ),
+					'statusInpainting'  => esc_js( __( 'AI Inpainting area...', 'cyphex-image-hunter' ) ),
+					'proRequired'		=> esc_js( __( 'Pro version required for this feature.', 'cyphex-image-hunter' ) ),
 				),
 			) );
 		}
@@ -478,7 +522,9 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 						<img src="{{ data.src.medium }}" draggable="false" alt="">
 						<div class="cyphex_image_hunter_overlay">
 							<button type="button" class="cyphex_image_hunter_btn_action cyphex_image_hunter_btn_primary cyphex_image_hunter_action_download"><?php esc_html_e( 'Download', 'cyphex-image-hunter'); ?></button>
-							<button type="button" class="cyphex_image_hunter_btn_action cyphex_image_hunter_action_refine"><?php esc_html_e( 'Refine with AI', 'cyphex-image-hunter'); ?></button>
+							<button type="button" class="cyphex_image_hunter_btn_action cyphex_image_hunter_action_refine"><?php esc_html_e( 'Refine Prompt', 'cyphex-image-hunter'); ?></button>
+							<button type="button" class="cyphex_image_hunter_btn_action cyphex_image_hunter_action_remove_bg {{ !cyphex_image_hunter_vars.isPro ? 'cyphex-locked-btn' : '' }}"><?php esc_html_e( 'Remove BG', 'cyphex-image-hunter'); ?> {{ !cyphex_image_hunter_vars.isPro ? '🔒' : '' }}</button>
+							<button type="button" class="cyphex_image_hunter_btn_action cyphex_image_hunter_action_inpaint {{ !cyphex_image_hunter_vars.isPro ? 'cyphex-locked-btn' : '' }}"><?php esc_html_e( 'AI Inpaint', 'cyphex-image-hunter'); ?> {{ !cyphex_image_hunter_vars.isPro ? '🔒' : '' }}</button>
 						</div>
 					</div>
 					<div class="cyphex_image_hunter_meta">
@@ -486,6 +532,38 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 						<span class="cyphex_image_hunter_source_badge">{{ data.source }}</span>
 					</div>
 				</li>
+			</script>
+
+			<script type="text/html" id="tmpl-cyphex-image-hunter-mask-modal">
+				<div class="cyphex_mask_modal_overlay">
+					<div class="cyphex_mask_modal_content">
+						<div class="cyphex_mask_modal_header">
+							<h3><?php esc_html_e( 'AI Inpainting: Draw Mask', 'cyphex-image-hunter'); ?></h3>
+							<button type="button" class="cyphex_mask_modal_close">&times;</button>
+						</div>
+						<div class="cyphex_mask_modal_body">
+							<p style="font-size:12px; color:#666; margin-bottom:10px;"><?php esc_html_e( 'Paint over the area you want the AI to change. Then describe what should be there.', 'cyphex-image-hunter'); ?></p>
+							<div class="cyphex_mask_canvas_container">
+								<img id="cyphex_mask_source_img" src="{{ data.url }}" style="display:none;">
+								<canvas id="cyphex_mask_canvas"></canvas>
+							</div>
+							<div class="cyphex_mask_controls">
+								<div class="cyphex_mask_group">
+									<label><?php esc_html_e( 'Brush Size', 'cyphex-image-hunter'); ?></label>
+									<input type="range" id="cyphex_mask_brush_size" min="5" max="50" value="20">
+								</div>
+								<div class="cyphex_mask_group" style="flex:1;">
+									<label><?php esc_html_e( 'What should be here?', 'cyphex-image-hunter'); ?></label>
+									<input type="text" id="cyphex_mask_prompt" placeholder="e.g. 'a futuristic hat', 'remove the person'" style="width:100%;">
+								</div>
+							</div>
+						</div>
+						<div class="cyphex_mask_modal_footer">
+							<button type="button" class="button button-secondary cyphex_mask_modal_clear"><?php esc_html_e( 'Clear Mask', 'cyphex-image-hunter'); ?></button>
+							<button type="button" class="button button-primary cyphex_mask_modal_submit"><?php esc_html_e( 'Generate Inpaint', 'cyphex-image-hunter'); ?></button>
+						</div>
+					</div>
+				</div>
 			</script>
 			<?php
 		}
@@ -864,6 +942,290 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			}
 
 			wp_send_json_success( array('id' => $attachment_id));
+		}
+
+		public function cyphex_handle_ajax_remove_bg() {
+			check_ajax_referer( 'cyphex_image_hunter_nonce', 'nonce' );
+			if ( ! cyphex_is_pro() || ! current_user_can( 'upload_files' ) ) {
+				wp_send_json_error( 'Pro version required' );
+			}
+
+			$replicate_key = get_option( 'cyphex_image_hunter_replicate_key' );
+			if ( ! $replicate_key ) wp_send_json_error( 'Missing Replicate API Key' );
+
+			$image_url = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
+			if ( ! $image_url ) wp_send_json_error( 'Missing image URL' );
+
+			// Replicate Prediction URL
+			$api_url = 'https://api.replicate.com/v1/predictions';
+			
+			// Start Prediction
+			$response = wp_remote_post( $api_url, array(
+				'headers' => array(
+					'Authorization' => 'Token ' . $replicate_key,
+					'Content-Type'  => 'application/json'
+				),
+				'body' => json_encode( array(
+					'version' => '95fcc2a26d3899cd6c2691c900465aaeff466285a65c14638cc5f36f34befaf1', // lucataco/remove-bg
+					'input'   => array( 'image' => $image_url )
+				) ),
+				'timeout' => 20
+			) );
+
+			if ( is_wp_error( $response ) ) wp_send_json_error( 'API Request Failed' );
+
+			$prediction = json_decode( wp_remote_retrieve_body( $response ), true );
+			$poll_url = $prediction['urls']['get'] ?? '';
+
+			if ( ! $poll_url ) wp_send_json_error( 'Failed to start background removal' );
+
+			// Polling (Synchronous for simplicity in this context, up to 15s)
+			$attempts = 0;
+			$result_url = '';
+			while ( $attempts < 10 ) {
+				sleep( 2 );
+				$poll_response = wp_remote_get( $poll_url, array(
+					'headers' => array( 'Authorization' => 'Token ' . $replicate_key ),
+					'timeout' => 15
+				) );
+				if ( is_wp_error( $poll_response ) ) break;
+				$status_data = json_decode( wp_remote_retrieve_body( $poll_response ), true );
+				if ( $status_data['status'] === 'succeeded' ) {
+					$result_url = $status_data['output'];
+					break;
+				}
+				if ( $status_data['status'] === 'failed' ) break;
+				$attempts++;
+			}
+
+			if ( ! $result_url ) wp_send_json_error( 'Background removal timed out or failed' );
+
+			wp_send_json_success( array( 'url' => $result_url ) );
+		}
+
+		public function cyphex_handle_ajax_inpainting() {
+			check_ajax_referer( 'cyphex_image_hunter_nonce', 'nonce' );
+			if ( ! cyphex_is_pro() || ! current_user_can( 'upload_files' ) ) {
+				wp_send_json_error( 'Pro version required' );
+			}
+
+			$replicate_key = get_option( 'cyphex_image_hunter_replicate_key' );
+			if ( ! $replicate_key ) wp_send_json_error( 'Missing Replicate API Key' );
+
+			$image_url = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
+			$mask_data = isset( $_POST['mask'] ) ? $_POST['mask'] : ''; // Base64 mask
+			$prompt = isset( $_POST['prompt'] ) ? sanitize_text_field( wp_unslash( $_POST['prompt'] ) ) : '';
+
+			if ( ! $image_url || ! $mask_data || ! $prompt ) {
+				wp_send_json_error( 'Missing required parameters for inpainting' );
+			}
+
+			// Start Prediction
+			$response = wp_remote_post( 'https://api.replicate.com/v1/predictions', array(
+				'headers' => array(
+					'Authorization' => 'Token ' . $replicate_key,
+					'Content-Type'  => 'application/json'
+				),
+				'body' => json_encode( array(
+					'version' => '8470477142436f5c88b0a5e2f7b4ee7229712a2012674e7dfc75f3a09e013444', // stability-ai/sdxl-inpainting
+					'input'   => array(
+						'image' => $image_url,
+						'mask'  => $mask_data,
+						'prompt' => $prompt,
+						'num_inference_steps' => 30
+					)
+				) ),
+				'timeout' => 20
+			) );
+
+			if ( is_wp_error( $response ) ) wp_send_json_error( 'API Request Failed' );
+
+			$prediction = json_decode( wp_remote_retrieve_body( $response ), true );
+			$poll_url = $prediction['urls']['get'] ?? '';
+
+			if ( ! $poll_url ) wp_send_json_error( 'Failed to start inpainting' );
+
+			// Polling
+			$attempts = 0;
+			$result_url = '';
+			while ( $attempts < 15 ) {
+				sleep( 2 );
+				$poll_response = wp_remote_get( $poll_url, array(
+					'headers' => array( 'Authorization' => 'Token ' . $replicate_key ),
+					'timeout' => 15
+				) );
+				if ( is_wp_error( $poll_response ) ) break;
+				$status_data = json_decode( wp_remote_retrieve_body( $poll_response ), true );
+				if ( $status_data['status'] === 'succeeded' ) {
+					// SDXL output is an array
+					$result_url = is_array( $status_data['output'] ) ? $status_data['output'][0] : $status_data['output'];
+					break;
+				}
+				if ( $status_data['status'] === 'failed' ) break;
+				$attempts++;
+			}
+
+			wp_send_json_success( array( 'url' => $result_url ) );
+		}
+
+		public function cyphex_handle_ajax_ai_alt_text() {
+			check_ajax_referer( 'cyphex_image_hunter_nonce', 'nonce' );
+			if ( ! cyphex_is_pro() || ! current_user_can( 'upload_files' ) ) {
+				wp_send_json_error( 'Pro version required' );
+			}
+
+			$replicate_key = get_option( 'cyphex_image_hunter_replicate_key' );
+			if ( ! $replicate_key ) wp_send_json_error( 'Missing Replicate API Key' );
+
+			$image_url = isset( $_POST['image_url'] ) ? esc_url_raw( wp_unslash( $_POST['image_url'] ) ) : '';
+			$attachment_id = isset( $_POST['attachment_id'] ) ? absint( $_POST['attachment_id'] ) : 0;
+			if ( ! $image_url || ! $attachment_id ) wp_send_json_error( 'Missing parameters' );
+
+			// Start Prediction
+			$response = wp_remote_post( 'https://api.replicate.com/v1/predictions', array(
+				'headers' => array(
+					'Authorization' => 'Token ' . $replicate_key,
+					'Content-Type'  => 'application/json'
+				),
+				'body' => json_encode( array(
+					'version' => '906a209995574c83e7456d2ee17c1808064b38d67228801d00c3c2f9d8544d6a', // meta/llama-3.2-11b-vision-instruct
+					'input'   => array(
+						'image' => $image_url,
+						'prompt' => 'Provide a concise, SEO-friendly WordPress Alt Text and a brief 1-sentence description for this image. Format your response exactly like this: ALT: [alt text] DESC: [description]',
+						'max_new_tokens' => 150
+					)
+				) ),
+				'timeout' => 25
+			) );
+
+			if ( is_wp_error( $response ) ) wp_send_json_error( 'API Request Failed' );
+
+			$prediction = json_decode( wp_remote_retrieve_body( $response ), true );
+			$poll_url = $prediction['urls']['get'] ?? '';
+
+			if ( ! $poll_url ) wp_send_json_error( 'Failed to start AI analysis' );
+
+			// Polling
+			$attempts = 0;
+			$ai_text = '';
+			while ( $attempts < 15 ) {
+				sleep( 2 );
+				$poll_response = wp_remote_get( $poll_url, array(
+					'headers' => array( 'Authorization' => 'Token ' . $replicate_key ),
+					'timeout' => 15
+				) );
+				if ( is_wp_error( $poll_response ) ) break;
+				$status_data = json_decode( wp_remote_retrieve_body( $poll_response ), true );
+				if ( $status_data['status'] === 'succeeded' ) {
+					$ai_text = is_array( $status_data['output'] ) ? implode( '', $status_data['output'] ) : $status_data['output'];
+					break;
+				}
+				if ( $status_data['status'] === 'failed' ) break;
+				$attempts++;
+			}
+
+			if ( ! $ai_text ) wp_send_json_error( 'AI analysis timed out or failed' );
+
+			// Parse response
+			$alt = ''; $desc = '';
+			if ( preg_match( '/ALT:\s*(.*?)\s*DESC:/i', $ai_text, $matches ) ) {
+				$alt = trim( $matches[1] );
+			}
+			if ( preg_match( '/DESC:\s*(.*)/i', $ai_text, $matches ) ) {
+				$desc = trim( $matches[1] );
+			}
+
+			if ( $alt ) update_post_meta( $attachment_id, '_wp_attachment_image_alt', $alt );
+			if ( $desc ) {
+				wp_update_post( array(
+					'ID'           => $attachment_id,
+					'post_content' => $desc,
+				) );
+			}
+
+			wp_send_json_success( array( 'alt' => $alt, 'desc' => $desc ) );
+		}
+
+		public function register_bulk_actions( $bulk_actions ) {
+			if ( cyphex_is_pro() ) {
+				$bulk_actions['cyphex_bulk_ai_alt'] = __( 'Generate AI Alt-Text (Cyphex)', 'cyphex-image-hunter' );
+			}
+			return $bulk_actions;
+		}
+
+		public function handle_bulk_actions( $redirect_to, $action, $post_ids ) {
+			if ( $action !== 'cyphex_bulk_ai_alt' ) return $redirect_to;
+
+			$count = 0;
+			foreach ( $post_ids as $post_id ) {
+				$image_url = wp_get_attachment_url( $post_id );
+				if ( ! $image_url ) continue;
+
+				// We reuse the logic but call it internally (or trigger it )
+				// For bulk, we'll do a simplified version to avoid timeout or use a background process.
+				// For now, we'll do it sequentially with a limit.
+				if ( $count >= 10 ) break; // Limit to 10 at a time for stability
+
+				$this->process_single_ai_alt( $post_id, $image_url );
+				$count++;
+			}
+
+			$redirect_to = add_query_arg( 'cyphex_bulk_processed', $count, $redirect_to );
+			return $redirect_to;
+		}
+
+		private function process_single_ai_alt( $attachment_id, $image_url ) {
+			$replicate_key = get_option( 'cyphex_image_hunter_replicate_key' );
+			if ( ! $replicate_key ) return;
+
+			$response = wp_remote_post( 'https://api.replicate.com/v1/predictions', array(
+				'headers' => array( 'Authorization' => 'Token ' . $replicate_key, 'Content-Type' => 'application/json' ),
+				'body' => json_encode( array(
+					'version' => '906a209995574c83e7456d2ee17c1808064b38d67228801d00c3c2f9d8544d6a',
+					'input'   => array(
+						'image' => $image_url,
+						'prompt' => 'Provide a concise, SEO-friendly WordPress Alt Text and a brief 1-sentence description. Format: ALT: [alt text] DESC: [description]',
+						'max_new_tokens' => 100
+					)
+				) ),
+				'timeout' => 20
+			) );
+
+			if ( is_wp_error( $response ) ) return;
+
+			$prediction = json_decode( wp_remote_retrieve_body( $response ), true );
+			$poll_url = $prediction['urls']['get'] ?? '';
+			if ( ! $poll_url ) return;
+
+			// Polling (Wait up to 10s for each in bulk )
+			$attempts = 0;
+			while ( $attempts < 5 ) {
+				sleep( 2 );
+				$poll_response = wp_remote_get( $poll_url, array( 'headers' => array( 'Authorization' => 'Token ' . $replicate_key ), 'timeout' => 10 ) );
+				if ( is_wp_error( $poll_response ) ) break;
+				$status_data = json_decode( wp_remote_retrieve_body( $poll_response ), true );
+				if ( $status_data['status'] === 'succeeded' ) {
+					$ai_text = is_array( $status_data['output'] ) ? implode( '', $status_data['output'] ) : $status_data['output'];
+					$this->save_ai_metadata( $attachment_id, $ai_text );
+					break;
+				}
+				$attempts++;
+			}
+		}
+
+		private function save_ai_metadata( $attachment_id, $ai_text ) {
+			$alt = ''; $desc = '';
+			if ( preg_match( '/ALT:\s*(.*?)\s*DESC:/i', $ai_text, $matches ) ) {
+				$alt = trim( $matches[1] );
+			}
+			if ( preg_match( '/DESC:\s*(.*)/i', $ai_text, $matches ) ) {
+				$desc = trim( $matches[1] );
+			}
+
+			if ( $alt ) update_post_meta( $attachment_id, '_wp_attachment_image_alt', $alt );
+			if ( $desc ) {
+				wp_update_post( array( 'ID' => $attachment_id, 'post_content' => $desc ) );
+			}
 		}
 
 		// Custom Helper to Force Exact Dimensions (Supports Upscaling )

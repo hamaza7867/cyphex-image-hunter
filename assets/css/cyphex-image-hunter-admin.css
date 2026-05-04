@@ -109,8 +109,8 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 8px;
-	
+	gap: 5px;
+	padding: 10px;
 }
 .cyphex_image_hunter_btn_action {
 	background: #fff;
@@ -121,8 +121,10 @@
 	font-size: 12px;
 	font-weight: 600;
 	cursor: pointer;
-	width: 80%;
-	
+	width: 90%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .cyphex_image_hunter_btn_action:hover {
 	background: #f0f0f1;
@@ -185,4 +187,117 @@
 select option:disabled {
 	color: #94a3b8;
 	background: #f1f5f9;
+}
+
+.cyphex-locked-btn {
+	background: #f8fafc !important;
+	color: #94a3b8 !important;
+	border: 1px dashed #cbd5e1 !important;
+	cursor: not-allowed !important;
+	opacity: 0.8;
+}
+
+.cyphex-locked-btn:hover {
+	background: #f8fafc !important;
+	color: #94a3b8 !important;
+}
+
+/* Mask Modal */
+.cyphex_mask_modal_overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.cyphex_mask_modal_content {
+	background: #fff;
+	width: 90%;
+	max-width: 800px;
+	border-radius: 12px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	max-height: 90vh;
+}
+.cyphex_mask_modal_header {
+	padding: 15px 20px;
+	border-bottom: 1px solid #eee;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.cyphex_mask_modal_header h3 { margin: 0; font-size: 18px; }
+.cyphex_mask_modal_close {
+	background: none;
+	border: none;
+	font-size: 24px;
+	cursor: pointer;
+	color: #94a3b8;
+}
+.cyphex_mask_modal_body {
+	padding: 20px;
+	overflow-y: auto;
+}
+.cyphex_mask_canvas_container {
+	position: relative;
+	background: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 8px;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+#cyphex_mask_canvas {
+	cursor: crosshair;
+	max-width: 100%;
+	height: auto;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.cyphex_mask_controls {
+	display: flex;
+	gap: 20px;
+	align-items: flex-end;
+}
+.cyphex_mask_group {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.cyphex_mask_group label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; }
+.cyphex_mask_modal_footer {
+	padding: 15px 20px;
+	background: #f8fafc;
+	border-top: 1px solid #eee;
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+/* Sidebar Actions */
+.cyphex-sidebar-actions {
+	border-top: 1px solid #ddd;
+	margin-top: 15px;
+	padding-top: 15px;
+}
+.cyphex-sidebar-actions .name {
+	color: #1e293b;
+	font-weight: 700 !important;
+}
+.cyphex-sidebar-actions .description {
+	margin-top: 5px;
+	font-style: italic;
+	color: #64748b;
+}
+.cyphex-sidebar-btn-remove-bg.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
