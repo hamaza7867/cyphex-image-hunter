@@ -4,7 +4,7 @@ Tags: ai images, image search, seo, ai video, pexels
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,13 @@ Check your server's `upload_max_filesize` in php.ini or ensure your WordPress us
 5. **Pixabay Setup** - Finding your Pixabay key in their documentation.
 
 == Changelog ==
+
+= 1.8.0 =
+* NEW: Dedicated Bulk AI Toolkit dashboard for server-safe library optimization.
+* NEW: Auto-WebP conversion on upload for JPG and PNG files.
+* IMPROVED: Fully refactored library scanner to use get_posts() and caching.
+* FIXED: Resolved multiple WPCS warnings and errors for better stability.
+* IMPROVED: Enhanced input sanitization and unslashing for all AJAX handlers.
 
 = 1.6.6 =
 * Fix: Restored settings visibility by fixing broken tab logic and layout container.
