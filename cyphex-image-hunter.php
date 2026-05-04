@@ -31,6 +31,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			// Settings
 			add_action( 'admin_menu', array( $this, 'add_settings_page' ));
 			add_action( 'admin_init', array( $this, 'register_settings' ));
+			add_action( 'admin_enqueue_scripts', array( $this, 'cyphex_admin_scripts' ) );
 
 			// Media Manager Integration
 			add_action( 'wp_enqueue_media', array( $this, 'cyphex_enqueue_media_assets' ) );
@@ -409,7 +410,7 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 			wp_enqueue_style('cyphex-image-hunter-admin-css', plugins_url('assets/css/cyphex-image-hunter-admin.css', __FILE__ ), array(), '1.6.6');
 			
 			// Enqueue JS
-			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.6.6', true );
+			wp_enqueue_script( 'cyphex-image-hunter-admin-js', plugins_url( 'assets/js/cyphex-image-hunter-admin.js', __FILE__ ), array( 'jquery', 'wp-util', 'media-views', 'media-models' ), '1.7.0', true );
 			
 			// Localize script with translatable strings
 			wp_localize_script( 'cyphex-image-hunter-admin-js', 'cyphex_image_hunter_vars', array(
@@ -428,6 +429,16 @@ if ( ! class_exists( 'Cyphex_Image_Hunter_Plugin' ) ) {
 					'errorServer'		=> esc_js( __( 'Server error. Please check your connection.', 'cyphex-image-hunter' ) ),
 					'errorPuter'		=> esc_js( __( 'AI Service (Puter) not available.', 'cyphex-image-hunter' ) ),
 					'errorRefine'		=> esc_js( __( 'AI Refinement failed.', 'cyphex-image-hunter' ) ),
+				),
+			) );
+		}
+
+		public function cyphex_admin_scripts( $hook ) {
+			if ( 'settings_page_cyphex-image-hunter' !== $hook ) {
+				return;
+			}
+			$this->cyphex_enqueue_media_assets();
+		}
 					'refinePrompt'		=> esc_js( __( 'How should I modify this image? (e.g., "Make it more professional", "Change color to blue")', 'cyphex-image-hunter' ) ),
 					'description'		=> esc_js( __( 'Description', 'cyphex-image-hunter' ) ),
 					'sourceModel'		=> esc_js( __( 'Source / Model', 'cyphex-image-hunter' ) ),
